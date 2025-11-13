@@ -1,9 +1,9 @@
-##Web-Sistema Agropecuario (Administración)
+## Web-Sistema Agropecuario (Administración)
 Proyecto web para gestión administrativa del sistema agropecuario. Desarrollado con Django y conectado a la misma base de datos que la web de productores.
 
-##BACKEND (Django) 
+## BACKEND (Django) 
 
-##Estructura general
+## Estructura general
 
 🔹 manage.py
 
