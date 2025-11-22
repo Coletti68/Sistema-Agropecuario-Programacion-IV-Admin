@@ -120,3 +120,51 @@ python manage.py runserver           # Iniciar servidor
 python manage.py makemigrations     # Crear migraciones
 python manage.py migrate            # Aplicar migraciones
 python manage.py createsuperuser    # Crear usuario admin
+
+
+## INSTALACIONES Y SUS ESPECIFICACIONES
+
+1. pip install django mysqlclient python-decouple
+Django: framework web, te da toda la estructura (apps, modelos, vistas, templates, admin).
+
+mysqlclient: conector para que Django pueda hablar con MySQL.
+
+python-decouple: permite leer variables desde .env (ej. credenciales de la base) sin hardcodearlas en settings.py.
+
+2. django-admin startproject sist_agropecuario
+Crea el proyecto base con carpetas y archivos (settings.py, urls.py, manage.py).
+
+
+3. python manage.py startapp api
+Crea una nueva app dentro del proyecto (api/).
+
+Ahí definís tus modelos, vistas, templates y lógica específica.
+
+Django funciona modular: cada app representa un módulo funcional (usuarios, insumos, etc.).
+
+4. Registrar la app en INSTALLED_APPS
+Le dice a Django que esa app existe y debe cargarse.
+
+Sin esto, no se crean sus tablas ni se reconocen sus templates.
+
+5. Configurar .env y settings.py
+.env: guarda credenciales y configuración sensible (nombre de DB, usuario, contraseña).
+
+settings.py: usa decouple para leer esas variables y configurar la conexión a MySQL.
+
+6. python manage.py makemigrations
+Escanea tus models.py y genera archivos de migración (planes de cambios).
+
+Ejemplo: si definís un modelo Usuario, crea un archivo que describe cómo generar la tabla usuario.
+
+7. python manage.py migrate
+Aplica esas migraciones en la base de datos real.
+
+Ejecuta el SQL necesario para crear/modificar tablas según tus modelos.
+
+Resultado: tu esquema en MySQL queda sincronizado con el código Django.
+
+8. python manage.py runserver
+Levanta el servidor de desarrollo en http://127.0.0.1:8000/.
+
+Te permite probar vistas, templates y APIs sin necesidad de un servidor externo.
