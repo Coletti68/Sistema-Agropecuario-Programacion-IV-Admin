@@ -134,6 +134,7 @@ python-decouple: permite leer variables desde .env (ej. credenciales de la base)
 2. django-admin startproject sist_agropecuario
 Crea el proyecto base con carpetas y archivos (settings.py, urls.py, manage.py).
 
+Es el “esqueleto” inicial de tu aplicación.
 
 3. python manage.py startapp api
 Crea una nueva app dentro del proyecto (api/).
