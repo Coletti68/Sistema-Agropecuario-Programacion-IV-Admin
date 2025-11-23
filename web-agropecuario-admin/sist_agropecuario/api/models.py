@@ -39,8 +39,8 @@ class UsuarioCultivo(models.Model):
     usuariocultivoid = models.AutoField(primary_key=True)
     usuarioid = models.ForeignKey(Usuario, on_delete=models.CASCADE, db_column='usuarioid')
     cultivoid = models.ForeignKey(Cultivo, on_delete=models.CASCADE, db_column='cultivoid')
-    latitud = models.DecimalField(max_digits=9, decimal_places=6)
-    longitud = models.DecimalField(max_digits=9, decimal_places=6)
+    latitud = models.DecimalField(max_digits=10, decimal_places=8)
+    longitud = models.DecimalField(max_digits=11, decimal_places=8)
     fechasiembra = models.DateField()
 
     class Meta:
@@ -66,7 +66,6 @@ class Proveedor(models.Model):
     contacto = models.CharField(max_length=100, blank=True, null=True)
     telefono = models.CharField(max_length=30, blank=True, null=True)
     email = models.CharField(max_length=100, blank=True, null=True)
-    direccion = models.TextField(blank=True, null=True)
     activo = models.BooleanField(default=True)
 
     class Meta:
@@ -79,9 +78,9 @@ class Insumo(models.Model):
     descripcion = models.TextField(blank=True, null=True)
     precio = models.DecimalField(max_digits=10, decimal_places=2)
     proveedor = models.ForeignKey(Proveedor, on_delete=models.CASCADE, db_column='proveedorid')
-    estado = models.BooleanField(default=True)
     stock = models.IntegerField(default=0)
     stock_minimo = models.IntegerField(default=0)
+    activo = models.BooleanField(default=True)
 
     class Meta:
         db_table = 'insumo'
@@ -91,6 +90,7 @@ class Solicitud(models.Model):
     solicitudid = models.AutoField(primary_key=True)
     usuario = models.ForeignKey('Usuario', on_delete=models.CASCADE, db_column='usuarioid')
     fechasolicitud = models.DateTimeField(auto_now_add=True)
+    estadosolicitudid = models.ForeignKey('EstadoSolicitud', on_delete=models.CASCADE, db_column='estadosolicitudid')
     activo = models.BooleanField(default=True)
 
     class Meta:
@@ -148,8 +148,8 @@ class ComprobanteEntrega(models.Model):
     solicitud = models.ForeignKey(Solicitud, on_delete=models.CASCADE, db_column='solicitudid')
     fechaentrega = models.DateTimeField(blank=True, null=True)
     total = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True)
-    entregadopor = models.IntegerField()
-    recibidopor = models.IntegerField()
+    entregadopor = models.CharField(max_length=100)
+    recibidopor = models.CharField(max_length=100)
     activo = models.BooleanField(default=True)
 
     class Meta:
