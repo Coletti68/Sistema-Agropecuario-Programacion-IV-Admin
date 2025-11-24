@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>Crear Usuario</h2>
+
+<form method="POST">
+    {% csrf_token %}
+
+    <label>Nombre:</label>
+    <input type="text" name="nombre" class="form-control" required>
+
+    <label>Email:</label>
+    <input type="email" name="email" class="form-control" required>
+
+    <label>Teléfono:</label>
+    <input type="text" name="telefono" class="form-control">
+
+    <label>DNI:</label>
+    <input type="text" name="dni" class="form-control">
+
+    <label>Dirección:</label>
+    <input type="text" name="direccion" class="form-control">
+
+    <label>Contraseña:</label>
+    <input type="password" name="password" class="form-control" required>
+
+    <label>Rol:</label>
+    <select name="rolid" class="form-control" required>
+        {% for rol in roles %}
+        <option value="{{ rol.pk }}">{{ rol.nombre }}</option>
+        {% endfor %}
+    </select>
+
+    <button class="btn btn-success mt-3">Guardar</button>
+</form>
+
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block title %}Detalle Solicitud{% endblock %}
+
+{% block content %}
+<h2>Detalle de Solicitud #{{ solicitud.solicitudid }}</h2>
+
+<ul>
+    {% for item in detalles %}
+    <li>{{ item.insumo.nombre }} — Cantidad: {{ item.cantidad }}</li>
+    {% endfor %}
+</ul>
+
+<a class="btn btn-secondary" href="{% url 'listar_solicitudes' %}">← Volver</a>
+{% endblock %}

@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block title %}Ver Comprobante{% endblock %}
+{% block content %}
+<h2>Comprobante #{{ comprobante.pk }}</h2>
+<p><strong>Usuario:</strong> {{ comprobante.usuario.nombre }}</p>
+<p><strong>Fecha:</strong> {{ comprobante.fecha }}</p>
+<p><strong>Monto:</strong> {{ comprobante.monto }}</p>
+<p><strong>Detalle:</strong> {{ comprobante.detalle }}</p>
+
+<a href="{% url 'listar_comprobantes' %}">← Volver al listado</a>
+{% endblock %}
+ 

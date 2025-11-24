@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>Editar Usuario</h2>
+
+<form method="POST">
+    {% csrf_token %}
+
+    <label>Nombre:</label>
+    <input type="text" name="nombre" value="{{ usuario.nombre }}" class="form-control" required>
+
+    <label>Email:</label>
+    <input type="email" name="email" value="{{ usuario.email }}" class="form-control" required>
+
+    <label>Teléfono:</label>
+    <input type="text" name="telefono" value="{{ usuario.telefono }}" class="form-control">
+
+    <label>DNI:</label>
+    <input type="text" name="dni" value="{{ usuario.dni }}" class="form-control">
+
+    <label>Dirección:</label>
+    <input type="text" name="direccion" value="{{ usuario.direccion }}" class="form-control">
+
+    <label>Nueva contraseña (opcional):</label>
+    <input type="password" name="password" class="form-control">
+
+    <label>Rol:</label>
+    <select name="rolid" class="form-control" required>
+        {% for rol in roles %}
+        <option value="{{ rol.pk }}" {% if rol.pk == usuario.rol.pk %}selected{% endif %}>
+            {{ rol.nombre }}
+        </option>
+        {% endfor %}
+    </select>
+
+    <button class="btn btn-success mt-3">Actualizar</button>
+</form>
+
+{% endblock %}

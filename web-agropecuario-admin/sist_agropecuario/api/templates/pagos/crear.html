@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block title %}Registrar Pago{% endblock %}
+{% block content %}
+<h2>➕ Registrar Pago</h2>
+<form method="post">
+    {% csrf_token %}
+    <label>Usuario:</label><br>
+    <select name="usuarioid" required>
+        {% for usuario in usuarios %}
+        <option value="{{ usuario.usuarioid }}">{{ usuario.nombre }}</option>
+        {% endfor %}
+    </select><br><br>
+
+    <label>Monto:</label><br>
+    <input type="number" name="monto" step="0.01" required><br><br>
+
+    <label>Estado:</label><br>
+    <select name="estado" required>
+        <option value="pendiente">Pendiente</option>
+        <option value="pagado">Pagado</option>
+        <option value="rechazado">Rechazado</option>
+    </select><br><br>
+
+    <button type="submit">Guardar</button>
+</form>
+<a href="{% url 'listar_pagos' %}">← Volver al listado</a>
+{% endblock %}

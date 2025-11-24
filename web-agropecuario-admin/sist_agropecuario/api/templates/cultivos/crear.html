@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block title %}Crear Cultivo{% endblock %}
+{% block content %}
+<h2>Nuevo Cultivo</h2>
+<form method="post">
+    {% csrf_token %}
+    <label>Nombre:</label><br>
+    <input type="text" name="nombre" required><br><br>
+
+    <label>Tipo:</label><br>
+    <input type="text" name="tipo" required><br><br>
+
+    <button type="submit">Guardar</button>
+</form>
+<a href="{% url 'listar_cultivos' %}">← Volver al listado</a>
+{% endblock %}

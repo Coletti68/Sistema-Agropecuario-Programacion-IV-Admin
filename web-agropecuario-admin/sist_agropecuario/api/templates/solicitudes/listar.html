@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% block title %}Listado de Solicitudes{% endblock %}
+
+{% block content %}
+<h2>📑 Solicitudes</h2>
+
+<p>Administrador: {{ nombre }}</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Usuario</th>
+            <th>Estado</th>
+            <th>Fecha</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for solicitud in solicitudes %}
+        <tr>
+            <td>{{ solicitud.solicitudid }}</td>
+            <td>{{ solicitud.usuario.nombre }}</td>
+            <td>{{ solicitud.estadosolicitudid.nombre }}</td>
+            <td>{{ solicitud.fechasolicitud }}</td>
+
+            <td>
+                <a class="btn btn-info" href="{% url 'detalle_solicitud' solicitud.pk %}">Detalles</a>
+                <a class="btn btn-secondary" href="{% url 'historial_solicitud' solicitud.pk %}">Historial</a>
+
+                <form action="{% url 'cambiar_estado_solicitud' solicitud.pk %}"
+                      method="POST" style="display:inline;">
+                    {% csrf_token %}
+                    <select name="estadoid">
+                        {% for estado in estados %}
+                        <option value="{{ estado.pk }}"
+                            {% if estado.pk == solicitud.estadosolicitudid.pk %}selected{% endif %}>
+                            {{ estado.nombre }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                    <button class="btn btn-primary btn-sm" type="submit">Cambiar</button>
+                </form>
+                <form method="get" action="">
+    <label>Filtrar por estado:</label>
+    <select name="estadoid">
+        <option value="">Todos</option>
+        {% for estado in estados %}
+            <option value="{{ estado.estadosolicitudid }}" {% if estado_seleccionado == estado.estadosolicitudid %}selected{% endif %}>
+                {{ estado.nombre }}
+            </option>
+        {% endfor %}
+    </select>
+    <button type="submit">Filtrar</button>
+</form>
+
+            </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="5">No hay solicitudes registradas.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<a href="{% url 'inicio' %}" class="btn btn-dark">← Volver</a>
+{% endblock %}

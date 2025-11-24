@@ -1,25 +1,27 @@
-from django.shortcuts import render, get_object_or_404
-from django.http import JsonResponse
-from ..models import Insumo
+from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib import messages
+from ..models import Insumo, Proveedor
 from django.db.models import F
 
-# GET /insumos
+# Listar insumos
 def listar_insumos(request):
-    insumos = Insumo.objects.filter(activo=True)
+    insumos = Insumo.objects.all()  # mostramos todos, activos o no
     return render(request, 'insumos/listar.html', {'insumos': insumos})
 
-# POST /insumos
+# Crear insumo
 def crear_insumo(request):
+    proveedores = Proveedor.objects.filter(activo=True)
     if request.method == 'POST':
         nombre = request.POST.get('nombre')
         descripcion = request.POST.get('descripcion')
         precio = request.POST.get('precio')
-        proveedor_id = request.POST.get('proveedorid')
+        proveedor_id = request.POST.get('proveedor_id')
         stock = request.POST.get('stock') or 0
         stock_minimo = request.POST.get('stock_minimo') or 0
 
         if not nombre or not precio:
-            return JsonResponse({'error': 'Nombre y precio son obligatorios'}, status=400)
+            messages.error(request, "Nombre y precio son obligatorios")
+            return render(request, 'insumos/crear.html', {'proveedores': proveedores})
 
         Insumo.objects.create(
             nombre=nombre,
@@ -30,46 +32,45 @@ def crear_insumo(request):
             stock_minimo=stock_minimo,
             activo=True
         )
-        return JsonResponse({'mensaje': 'Insumo creado correctamente'})
-    return render(request, 'insumos/crear.html')
+        messages.success(request, "Insumo creado correctamente")
+        return redirect('listar_insumos')
 
-# PUT /insumos/:id
+    return render(request, 'insumos/crear.html', {'proveedores': proveedores})
+
+# Editar insumo
 def editar_insumo(request, pk):
     insumo = get_object_or_404(Insumo, pk=pk)
+    proveedores = Proveedor.objects.filter(activo=True)
     if request.method == 'POST':
         insumo.nombre = request.POST.get('nombre') or insumo.nombre
         insumo.descripcion = request.POST.get('descripcion') or insumo.descripcion
         insumo.precio = request.POST.get('precio') or insumo.precio
-        insumo.proveedor_id = request.POST.get('proveedorid') or insumo.proveedor_id
+        insumo.proveedor_id = request.POST.get('proveedor_id') or insumo.proveedor_id
         insumo.stock = request.POST.get('stock') or insumo.stock
         insumo.stock_minimo = request.POST.get('stock_minimo') or insumo.stock_minimo
         insumo.save()
-        return JsonResponse({'mensaje': 'Insumo actualizado'})
-    return render(request, 'insumos/editar.html', {'insumo': insumo})
+        messages.success(request, "Insumo actualizado correctamente")
+        return redirect('listar_insumos')
 
-# DELETE /insumos/:id
+    return render(request, 'insumos/editar.html', {'insumo': insumo, 'proveedores': proveedores})
+
+# Desactivar insumo
 def desactivar_insumo(request, pk):
     insumo = get_object_or_404(Insumo, pk=pk)
     insumo.activo = False
     insumo.save()
-    return JsonResponse({'mensaje': 'Insumo desactivado'})
+    messages.success(request, f"Insumo '{insumo.nombre}' desactivado")
+    return redirect('listar_insumos')
 
-# PUT /insumos/:id/activar
+# Activar insumo
 def activar_insumo(request, pk):
     insumo = get_object_or_404(Insumo, pk=pk)
     insumo.activo = True
     insumo.save()
-    return JsonResponse({'mensaje': 'Insumo activado'})
+    messages.success(request, f"Insumo '{insumo.nombre}' activado")
+    return redirect('listar_insumos')
 
-
-# GET /insumos/stock-critico
+# Insumos con stock crítico
 def insumos_stock_critico(request):
     insumos = Insumo.objects.filter(activo=True, stock__lt=F('stock_minimo'))
-    data = [{
-        'id': i.pk,
-        'nombre': i.nombre,
-        'stock': i.stock,
-        'stock_minimo': i.stock_minimo
-    } for i in insumos]
-    return JsonResponse(data, safe=False)
-
+    return render(request, 'insumos/stock_critico.html', {'insumos': insumos})

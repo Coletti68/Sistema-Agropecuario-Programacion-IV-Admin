@@ -1,10 +1,10 @@
-from django.shortcuts import render, get_object_or_404
-from django.http import JsonResponse
+from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib import messages
 from ..models import Proveedor, Insumo
 
 # GET /proveedores
 def listar_proveedores(request):
-    proveedores = Proveedor.objects.filter(activo=True)
+    proveedores = Proveedor.objects.all()  # mostramos todos
     return render(request, 'proveedores/listar.html', {'proveedores': proveedores})
 
 # POST /proveedores
@@ -16,7 +16,8 @@ def crear_proveedor(request):
         email = request.POST.get('email')
 
         if not nombre:
-            return JsonResponse({'error': 'Nombre obligatorio'}, status=400)
+            messages.error(request, "El nombre es obligatorio")
+            return render(request, 'proveedores/crear.html')
 
         Proveedor.objects.create(
             nombre=nombre,
@@ -25,10 +26,13 @@ def crear_proveedor(request):
             email=email,
             activo=True
         )
-        return JsonResponse({'mensaje': 'Proveedor creado correctamente'})
+        messages.success(request, "Proveedor creado correctamente")
+        return redirect('listar_proveedores')
+
     return render(request, 'proveedores/crear.html')
 
-# PUT /proveedores/:id
+
+# POST /proveedores/:id
 def editar_proveedor(request, pk):
     proveedor = get_object_or_404(Proveedor, pk=pk)
     if request.method == 'POST':
@@ -37,31 +41,32 @@ def editar_proveedor(request, pk):
         proveedor.telefono = request.POST.get('telefono') or proveedor.telefono
         proveedor.email = request.POST.get('email') or proveedor.email
         proveedor.save()
-        return JsonResponse({'mensaje': 'Proveedor actualizado'})
+        messages.success(request, "Proveedor actualizado correctamente")
+        return redirect('listar_proveedores')
+
     return render(request, 'proveedores/editar.html', {'proveedor': proveedor})
 
-# DELETE /proveedores/:id
+
+# GET /proveedores/:id/desactivar
 def desactivar_proveedor(request, pk):
     proveedor = get_object_or_404(Proveedor, pk=pk)
     proveedor.activo = False
     proveedor.save()
-    return JsonResponse({'mensaje': 'Proveedor desactivado'})
+    messages.success(request, "Proveedor desactivado correctamente")
+    return redirect('listar_proveedores')
 
-# PUT /proveedores/:id/activar
+
+# GET /proveedores/:id/activar
 def activar_proveedor(request, pk):
     proveedor = get_object_or_404(Proveedor, pk=pk)
     proveedor.activo = True
     proveedor.save()
-    return JsonResponse({'mensaje': 'Proveedor activado'})
+    messages.success(request, "Proveedor activado correctamente")
+    return redirect('listar_proveedores')
+
 
 # GET /proveedores/:id/insumos
 def listar_insumos_por_proveedor(request, pk):
-    proveedor = get_object_or_404(Proveedor, pk=pk, activo=True)
-    insumos = Insumo.objects.filter(proveedor=proveedor, activo=True)
-    data = [{
-        'id': i.pk,
-        'nombre': i.nombre,
-        'precio': i.precio,
-        'stock': i.stock
-    } for i in insumos]
-    return JsonResponse({'proveedor': proveedor.nombre, 'insumos': data})
+    proveedor = get_object_or_404(Proveedor, pk=pk)
+    insumos = Insumo.objects.filter(proveedor=proveedor)
+    return render(request, 'insumos/listar_por_proveedor.html', {'proveedor': proveedor, 'insumos': insumos})

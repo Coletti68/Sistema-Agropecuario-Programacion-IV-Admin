@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>Usuarios</h2>
+
+<a href="{% url 'crear_usuario' %}" class="btn btn-primary mb-3">Nuevo Usuario</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Email</th>
+            <th>Rol</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for usuario in usuarios %}
+        <tr>
+            <td>{{ usuario.nombre }}</td>
+            <td>{{ usuario.email }}</td>
+            <td>{{ usuario.rol.nombre }}</td>
+            <td>
+                {% if usuario.activo %}Activo{% else %}Inactivo{% endif %}
+            </td>
+            <td>
+                <a href="{% url 'editar_usuario' usuario.pk %}" class="btn btn-warning">Editar</a>
+
+                {% if usuario.activo %}
+                    <a href="{% url 'desactivar_usuario' usuario.pk %}" class="btn btn-danger">Desactivar</a>
+                {% else %}
+                    <a href="{% url 'activar_usuario' usuario.pk %}" class="btn btn-success">Activar</a>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

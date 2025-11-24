@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block title %}Detalle Historial Cultivo{% endblock %}
+{% block content %}
+<h2>Detalle de Historial de Cultivo</h2>
+<ul>
+    <li>Cultivo: {{ historial.cultivo.nombre }}</li>
+    <li>Usuario: {{ historial.usuario.nombre }}</li>
+    <li>Fecha: {{ historial.fecha }}</li>
+    <li>Acción: {{ historial.accion }}</li>
+</ul>
+<a href="{% url 'listar_historial' %}">← Volver al historial</a>
+{% endblock %}

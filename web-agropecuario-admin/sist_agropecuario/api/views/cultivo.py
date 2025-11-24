@@ -43,13 +43,21 @@ def activar_cultivo(request, pk):
     return JsonResponse({'mensaje': 'Cultivo activado'})
 
 # GET /cultivos/asignados
+from django.http import JsonResponse
+from ..models import UsuarioCultivo
+
 def ver_cultivos_asignados(request):
-    asignaciones = UsuarioCultivo.objects.select_related('usuario', 'cultivo').all()
+    # Traemos todas las asignaciones sin filtrar por activo
+    asignaciones = UsuarioCultivo.objects.select_related('usuarioid', 'cultivoid').all()
+
+    # Creamos la lista de datos
     data = [{
-        'usuario': a.usuario.nombre,
-        'cultivo': a.cultivo.nombre,
+        'id': a.usuariocultivoid,
+        'usuario': a.usuarioid.nombre,
+        'cultivo': a.cultivoid.nombre,
         'latitud': a.latitud,
         'longitud': a.longitud,
-        'fecha_siembra': a.fechasiembra
+        'fechasiembra': a.fechasiembra
     } for a in asignaciones]
+
     return JsonResponse(data, safe=False)

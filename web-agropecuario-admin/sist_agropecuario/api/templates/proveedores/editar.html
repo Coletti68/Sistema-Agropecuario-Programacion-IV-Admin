@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block title %}Editar Proveedor{% endblock %}
+{% block content %}
+<h2>Editar Proveedor</h2>
+
+{% for message in messages %}
+    <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">{{ message }}</div>
+{% endfor %}
+
+<form method="post">
+    {% csrf_token %}
+    <label>Nombre:</label><br>
+    <input type="text" name="nombre" value="{{ proveedor.nombre }}" required><br><br>
+
+    <label>Contacto:</label><br>
+    <input type="text" name="contacto" value="{{ proveedor.contacto }}"><br><br>
+
+    <label>Email:</label><br>
+    <input type="email" name="email" value="{{ proveedor.email }}"><br><br>
+
+    <label>Teléfono:</label><br>
+    <input type="text" name="telefono" value="{{ proveedor.telefono }}"><br><br>
+
+    <button type="submit">Actualizar</button>
+</form>
+<a href="{% url 'listar_proveedores' %}">← Volver al listado</a>
+{% endblock %}
+{% for message in messages %}
+<div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+    {{ message }}
+</div>
+{% endfor %}

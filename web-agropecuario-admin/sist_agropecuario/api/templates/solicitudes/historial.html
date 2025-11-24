@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}Historial Solicitud{% endblock %}
+
+{% block content %}
+<h2>Historial de Solicitud #{{ solicitud.solicitudid }}</h2>
+
+<ul>
+    {% for h in historial %}
+    <li>
+        {{ h.fecha }} — {{ h.estadosolicitud.nombre }}
+        {% if h.usuario %} por {{ h.usuario.nombre }} {% endif %}
+    </li>
+    {% endfor %}
+</ul>
+
+<a class="btn btn-secondary" href="{% url 'listar_solicitudes' %}">← Volver</a>
+{% endblock %}

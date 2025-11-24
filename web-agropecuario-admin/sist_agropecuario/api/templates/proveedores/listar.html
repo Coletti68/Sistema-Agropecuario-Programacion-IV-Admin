@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% block title %}Listado de Proveedores{% endblock %}
+{% block content %}
+<h2>🏢 Proveedores</h2>
+
+{% for message in messages %}
+    <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">{{ message }}</div>
+{% endfor %}
+
+<table>
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Contacto</th>
+            <th>Teléfono</th>
+            <th>Email</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for proveedor in proveedores %}
+        <tr>
+            <td>{{ proveedor.nombre }}</td>
+            <td>{{ proveedor.contacto }}</td>
+            <td>{{ proveedor.telefono }}</td>
+            <td>{{ proveedor.email }}</td>
+            <td>{% if proveedor.activo %}✅ Activo{% else %}❌ Inactivo{% endif %}</td>
+            <td>
+                <a href="{% url 'editar_proveedor' proveedor.pk %}">Editar</a> |
+                {% if proveedor.activo %}
+                    <a href="{% url 'desactivar_proveedor' proveedor.pk %}">Desactivar</a>
+                {% else %}
+                    <a href="{% url 'activar_proveedor' proveedor.pk %}">Activar</a>
+                {% endif %}
+            </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="6">No hay proveedores registrados.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+<a href="{% url 'crear_proveedor' %}">← Nuevo Proveedor</a>
+{% endblock %}
+{% for message in messages %}
+<div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+    {{ message }}
+</div>
+{% endfor %}

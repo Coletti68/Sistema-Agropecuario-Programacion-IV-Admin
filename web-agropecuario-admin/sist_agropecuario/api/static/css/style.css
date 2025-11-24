@@ -1,0 +1,121 @@
+/* --- Reset básico --- */
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f5f6fa;
+}
+
+/* --- Sidebar --- */
+.sidebar {
+    width: 220px;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #2f3640;
+    color: #f5f6fa;
+    display: flex;
+    flex-direction: column;
+    padding-top: 20px;
+    box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+}
+
+.sidebar h4 {
+    text-align: center;
+    margin-bottom: 30px;
+    font-weight: bold;
+}
+
+.sidebar a {
+    color: #f5f6fa;
+    text-decoration: none;
+    padding: 12px 20px;
+    margin: 4px 0;
+    border-radius: 5px;
+    transition: 0.3s;
+}
+
+.sidebar a:hover {
+    background-color: #718093;
+    color: #fff;
+}
+
+/* --- Topbar --- */
+.topbar {
+    background-color: #fff;
+    padding: 15px 20px;
+    border-bottom: 1px solid #dcdde1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+/* --- Contenido principal --- */
+.flex-grow-1 {
+    margin-left: 220px; /* ancho del sidebar */
+    padding: 20px;
+}
+
+/* --- Tarjetas --- */
+.card {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    transition: transform 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-3px);
+}
+
+/* --- Botones --- */
+.btn-primary {
+    background-color: #4cd137;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    transition: 0.3s;
+}
+
+.btn-primary:hover {
+    background-color: #44bd32;
+}
+
+/* --- Tablas --- */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+th, td {
+    padding: 12px 15px;
+    text-align: left;
+}
+
+th {
+    background-color: #40739e;
+    color: #fff;
+}
+
+tr:nth-child(even) {
+    background-color: #f1f2f6;
+}
+
+/* --- Alertas --- */
+.alert {
+    padding: 10px 15px;
+    border-radius: 5px;
+}
+
+.alert-danger {
+    background-color: #e84118;
+    color: #fff;
+}

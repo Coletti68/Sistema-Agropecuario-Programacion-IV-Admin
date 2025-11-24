@@ -1,19 +1,30 @@
-from django.contrib.auth.models import User
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
-from rest_framework import status
+from django.shortcuts import render, redirect
+from django.db import connection
+from django.contrib import messages
 
-@api_view(['POST'])
-def register(request):
-    username = request.data.get('username')
-    password = request.data.get('password')
-    email = request.data.get('email')
+def login_custom(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        password = request.POST.get('password')
 
-    if not username or not password:
-        return Response({'error': 'Faltan campos obligatorios'}, status=status.HTTP_400_BAD_REQUEST)
+        with connection.cursor() as cursor:
+            cursor.execute("""
+                SELECT usuarioid, nombre, rolid
+                FROM usuario
+                WHERE email = %s AND passwordhash = SHA2(%s, 256) AND activo = TRUE
+            """, [email, password])
+            user = cursor.fetchone()
 
-    if User.objects.filter(username=username).exists():
-        return Response({'error': 'Usuario ya existe'}, status=status.HTTP_400_BAD_REQUEST)
+        if user:
+            request.session['usuarioid'] = user[0]
+            request.session['nombre'] = user[1]
+            request.session['rolid'] = user[2]
+            return redirect('/')  # 🔥 redirige al panel
+        else:
+            messages.error(request, 'Credenciales inválidas.')
 
-    user = User.objects.create_user(username=username, password=password, email=email)
-    return Response({'mensaje': 'Usuario creado correctamente'}, status=status.HTTP_201_CREATED)
+    return render(request, 'registro/login.html')
+
+def logout_custom(request):
+    request.session.flush()
+    return redirect('login_custom')

@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block title %}Listado de Insumos{% endblock %}
+{% block content %}
+<h2>📦 Insumos</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Descripción</th>
+            <th>Precio</th>
+            <th>Stock</th>
+            <th>Stock mínimo</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for insumo in insumos %}
+        <tr>
+            <td>{{ insumo.nombre }}</td>
+            <td>{{ insumo.descripcion }}</td>
+            <td>{{ insumo.precio }}</td>
+            <td>{{ insumo.stock }}</td>
+            <td>{{ insumo.stock_minimo }}</td>
+            <td>{% if insumo.activo %}✅ Activo{% else %}❌ Inactivo{% endif %}</td>
+            <td>
+                <a href="{% url 'editar_insumo' insumo.pk %}">Editar</a> |
+                {% if insumo.activo %}
+                    <a href="{% url 'desactivar_insumo' insumo.pk %}">Desactivar</a>
+                {% else %}
+                    <a href="{% url 'activar_insumo' insumo.pk %}">Activar</a>
+                {% endif %}
+            </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="7">No hay insumos registrados.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+<a href="{% url 'crear_insumo' %}">← Nuevo Insumo</a>
+{% endblock %}

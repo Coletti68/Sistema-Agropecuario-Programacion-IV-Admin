@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block title %}Listado de Pagos{% endblock %}
+{% block content %}
+<h2>💰 Pagos registrados</h2>
+<p>Administrador: {{ nombre }}</p>
+
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Usuario</th>
+            <th>Monto</th>
+            <th>Fecha</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for pago in pagos %}
+        <tr>
+            <td>{{ pago.pagoid }}</td>
+            <td>{{ pago.usuario.nombre }}</td>
+            <td>{{ pago.monto }}</td>
+            <td>{{ pago.fecha_pago }}</td>
+            <td>{{ pago.estado_pago }}</td>
+            <td>
+                <form method="post" action="{% url 'actualizar_estado_pago' pago.pk %}" style="display:inline;">
+                    {% csrf_token %}
+                    <select name="estado">
+                        <option value="pendiente" {% if pago.estado_pago == 'pendiente' %}selected{% endif %}>Pendiente</option>
+                        <option value="pagado" {% if pago.estado_pago == 'pagado' %}selected{% endif %}>Pagado</option>
+                        <option value="rechazado" {% if pago.estado_pago == 'rechazado' %}selected{% endif %}>Rechazado</option>
+                    </select>
+                    <button type="submit">Actualizar</button>
+                </form>
+            </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="6">No hay pagos registrados.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<a href="{% url 'inicio' %}">← Volver al panel</a>
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block title %}Editar Insumo{% endblock %}
+{% block content %}
+<h2>Editar Insumo</h2>
+<form method="post">
+    {% csrf_token %}
+    <label>Nombre:</label><br>
+    <input type="text" name="nombre" value="{{ insumo.nombre }}" required><br><br>
+
+    <label>Descripción:</label><br>
+    <textarea name="descripcion">{{ insumo.descripcion }}</textarea><br><br>
+
+    <label>Stock:</label><br>
+    <input type="number" name="stock" value="{{ insumo.stock }}" min="0" required><br><br>
+
+    <label>Proveedor:</label><br>
+    <select name="proveedor_id">
+        {% for proveedor in proveedores %}
+        <option value="{{ proveedor.pk }}" {% if insumo.proveedor.pk == proveedor.pk %}selected{% endif %}>
+            {{ proveedor.nombre }}
+        </option>
+        {% endfor %}
+    </select><br><br>
+
+    <button type="submit">Actualizar</button>
+</form>
+<a href="{% url 'listar_insumos' %}">← Volver al listado</a>
+{% endblock %}

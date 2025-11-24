@@ -12,7 +12,7 @@ def registrar_pago(request):
     if request.method == 'POST':
         usuario_id = request.POST.get('usuarioid')
         monto = request.POST.get('monto')
-        estado = request.POST.get('estado')  # ahora es texto
+        estado = request.POST.get('estado')
 
         if not usuario_id or not monto or not estado:
             return JsonResponse({'error': 'Campos obligatorios faltantes'}, status=400)
@@ -22,10 +22,14 @@ def registrar_pago(request):
         Pago.objects.create(
             usuario=usuario,
             monto=monto,
-            estado_pago=estado  # asignación directa al CharField
+            estado_pago=estado
         )
         return JsonResponse({'mensaje': 'Pago registrado correctamente'})
-    return JsonResponse({'error': 'Método inválido'}, status=405)
+
+    # 🔥 cargar usuarios activos
+    usuarios = Usuario.objects.filter(activo=True)
+    return render(request, 'pagos/crear.html', {'usuarios': usuarios})
+
 
 # PUT /pagos/:id (admin)
 def actualizar_estado_pago(request, pk):
