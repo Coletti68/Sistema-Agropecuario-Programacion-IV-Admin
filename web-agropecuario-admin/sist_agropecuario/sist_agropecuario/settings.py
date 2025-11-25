@@ -50,7 +50,11 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'api.middleware.AuthMiddleware',  # Middleware de autenticación personalizado
 ]
+
+# La sesión expira al cerrar el navegador
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
 ROOT_URLCONF = 'sist_agropecuario.urls'
 
@@ -80,13 +84,17 @@ WSGI_APPLICATION = 'sist_agropecuario.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': config('DB_NAME'),
-        'USER': config('DB_USER'),
-        'PASSWORD': config('DB_PASSWORD'),
-        'HOST': config('DB_HOST', default='localhost'),
-        'PORT': config('DB_PORT', default='3306'),
+        'NAME': 'sist_agropecuario',
+        'USER': 'root',
+        'PASSWORD': 'root',
+        'HOST': 'localhost',
+        'PORT': '3306',
+        'OPTIONS': {
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
+        }
     }
 }
+
 
 
 
@@ -124,6 +132,6 @@ STATICFILES_DIRS = [
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Redirecciones de login/logout
-LOGIN_URL = 'login'                  # si intentás entrar a una vista protegida, te manda acá
+LOGIN_URL = 'login_custom'                  # si intentás entrar a una vista protegida, te manda acá
 LOGIN_REDIRECT_URL = 'listar_usuarios'  # a dónde va después de loguearse
 LOGOUT_REDIRECT_URL = 'login'        # a dónde va después de cerrar sesión

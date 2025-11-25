@@ -1,17 +1,70 @@
 {% extends 'base.html' %}
-{% block title %}Historial Solicitud{% endblock %}
+{% block title %}Historial de Solicitud #{{ solicitud.solicitudid }}{% endblock %}
+
+{% block header %}Historial de Solicitud{% endblock %}
 
 {% block content %}
-<h2>Historial de Solicitud #{{ solicitud.solicitudid }}</h2>
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-history me-2"></i>Historial - Solicitud #{{ solicitud.solicitudid }}
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="timeline">
+                    {% for h in historial %}
+                    <div class="timeline-item">
+                        <div class="timeline-marker bg-primary"></div>
+                        <div class="timeline-content">
+                            <h6 class="mb-0">{{ h.estadosolicitud.nombre }}</h6>
+                            <small class="text-muted">
+                                <i class="far fa-clock me-1"></i>{{ h.fecha|date:"d/m/Y H:i" }}
+                            </small>
+                            {% if h.usuario %}
+                            <p class="mb-0 mt-1 text-muted small">
+                                <i class="fas fa-user me-1"></i> Por: {{ h.usuario.nombre }}
+                            </p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% empty %}
+                    <p class="text-muted text-center">No hay historial disponible.</p>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="card-footer text-end">
+                <a href="{% url 'listar_solicitudes' %}" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left me-1"></i> Volver
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
 
-<ul>
-    {% for h in historial %}
-    <li>
-        {{ h.fecha }} — {{ h.estadosolicitud.nombre }}
-        {% if h.usuario %} por {{ h.usuario.nombre }} {% endif %}
-    </li>
-    {% endfor %}
-</ul>
+<style>
+    .timeline {
+        position: relative;
+        padding-left: 1.5rem;
+        border-left: 2px solid #e9ecef;
+    }
 
-<a class="btn btn-secondary" href="{% url 'listar_solicitudes' %}">← Volver</a>
+    .timeline-item {
+        position: relative;
+        padding-bottom: 1.5rem;
+        padding-left: 1.5rem;
+    }
+
+    .timeline-marker {
+        position: absolute;
+        left: -2.1rem;
+        top: 0.25rem;
+        width: 1rem;
+        height: 1rem;
+        border-radius: 50%;
+        border: 2px solid white;
+        box-shadow: 0 0 0 2px var(--primary-color);
+    }
+</style>
 {% endblock %}

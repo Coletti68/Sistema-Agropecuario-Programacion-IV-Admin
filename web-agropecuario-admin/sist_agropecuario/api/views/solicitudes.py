@@ -54,14 +54,16 @@ def detalle_solicitud(request, pk):
     solicitud = get_object_or_404(Solicitud, pk=pk)
     detalles = SolicitudDetalle.objects.filter(solicitud=solicitud)
     
+    detalles_list = []
     total_general = 0
     for item in detalles:
         item.subtotal = item.cantidad * item.preciounitario  # calculamos subtotal
         total_general += item.subtotal
+        detalles_list.append(item)
 
     return render(request, "solicitudes/detalle.html", {
         "solicitud": solicitud,
-        "detalles": detalles,
+        "detalles": detalles_list,
         "total_general": total_general,
     })
 

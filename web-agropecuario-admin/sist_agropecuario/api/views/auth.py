@@ -1,26 +1,22 @@
 from django.shortcuts import render, redirect
-from django.db import connection
-from django.contrib import messages
+from django.contrib.auth.hashers import check_password
+from ..models import Usuario
 
 def login_custom(request):
     if request.method == 'POST':
         email = request.POST.get('email')
         password = request.POST.get('password')
 
-        with connection.cursor() as cursor:
-            cursor.execute("""
-                SELECT usuarioid, nombre, rolid
-                FROM usuario
-                WHERE email = %s AND passwordhash = SHA2(%s, 256) AND activo = TRUE
-            """, [email, password])
-            user = cursor.fetchone()
-
-        if user:
-            request.session['usuarioid'] = user[0]
-            request.session['nombre'] = user[1]
-            request.session['rolid'] = user[2]
-            return redirect('/')  # 🔥 redirige al panel
-        else:
+        try:
+            user = Usuario.objects.get(email=email, activo=True)
+            if check_password(password, user.passwordhash):
+                request.session['usuarioid'] = user.usuarioid
+                request.session['nombre'] = user.nombre
+                request.session['rolid'] = user.rol.rolid
+                return redirect('/')
+            else:
+                messages.error(request, 'Credenciales inválidas.')
+        except Usuario.DoesNotExist:
             messages.error(request, 'Credenciales inválidas.')
 
     return render(request, 'registro/login.html')

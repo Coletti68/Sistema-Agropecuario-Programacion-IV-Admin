@@ -44,20 +44,26 @@ def crear_insumo(request):
 
 # Editar insumo
 def editar_insumo(request, pk):
-    insumo = get_object_or_404(Insumo, pk=pk)
-    proveedores = Proveedor.objects.filter(activo=True)
-    if request.method == 'POST':
-        insumo.nombre = request.POST.get('nombre') or insumo.nombre
-        insumo.descripcion = request.POST.get('descripcion') or insumo.descripcion
-        insumo.precio = request.POST.get('precio') or insumo.precio
-        insumo.proveedor_id = request.POST.get('proveedor_id') or insumo.proveedor_id
-        insumo.stock = request.POST.get('stock') or insumo.stock
-        insumo.stock_minimo = request.POST.get('stock_minimo') or insumo.stock_minimo
-        insumo.save()
-        messages.success(request, "Insumo actualizado correctamente")
-        return redirect('listar_insumos')
+    try:
+        insumo = get_object_or_404(Insumo, pk=pk)
+        proveedores = Proveedor.objects.filter(activo=True)
+        if request.method == 'POST':
+            insumo.nombre = request.POST.get('nombre') or insumo.nombre
+            insumo.descripcion = request.POST.get('descripcion') or insumo.descripcion
+            insumo.precio = request.POST.get('precio') or insumo.precio
+            insumo.proveedor_id = request.POST.get('proveedor_id') or insumo.proveedor_id
+            insumo.stock = request.POST.get('stock') or insumo.stock
+            insumo.stock_minimo = request.POST.get('stock_minimo') or insumo.stock_minimo
+            insumo.save()
+            messages.success(request, "Insumo actualizado correctamente")
+            return redirect('listar_insumos')
 
-    return render(request, 'insumos/editar.html', {'insumo': insumo, 'proveedores': proveedores})
+        return render(request, 'insumos/editar_v2.html', {'insumo': insumo, 'proveedores': proveedores})
+    except Exception as e:
+        import traceback
+        with open('error_log.txt', 'w') as f:
+            f.write(traceback.format_exc())
+        raise e
 
 # Desactivar insumo
 def desactivar_insumo(request, pk):

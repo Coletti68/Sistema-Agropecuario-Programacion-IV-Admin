@@ -1,39 +1,60 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Admin Agro</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Bootstrap (Optional for grid, but using custom mainly) -->
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
+
 <body class="login-body">
 
-    <div class="login-container d-flex justify-content-center align-items-center">
-        <div class="login-card p-4">
-            <h2 class="text-center mb-4">Admin Agro</h2>
-            
+    <div class="login-container">
+        <div class="login-card">
+            <div class="mb-4">
+                <i class="fas fa-leaf fa-3x" style="color: var(--primary-color);"></i>
+            </div>
+            <h2>Bienvenido</h2>
+            <p class="subtitle">Ingresa a tu panel de administración</p>
+
             {% if messages %}
-                {% for message in messages %}
-                    <div class="alert alert-danger">{{ message }}</div>
-                {% endfor %}
+            {% for message in messages %}
+            <div class="alert alert-danger">
+                <i class="fas fa-exclamation-circle me-2"></i> {{ message }}
+            </div>
+            {% endfor %}
             {% endif %}
-            
+
             <form method="post">
                 {% csrf_token %}
-                <div class="mb-3">
-                    <label>Email</label>
-                    <input type="email" name="email" class="form-control login-input" placeholder="admin@agro.com" required>
+                <div class="mb-3 text-start">
+                    <label><i class="fas fa-envelope me-2"></i>Email</label>
+                    <input type="email" name="email" class="form-control login-input" placeholder="ejemplo@agro.com"
+                        required>
                 </div>
-                <div class="mb-3">
-                    <label>Contraseña</label>
-                    <input type="password" name="password" class="form-control login-input" placeholder="••••••••" required>
+                <div class="mb-4 text-start">
+                    <label><i class="fas fa-lock me-2"></i>Contraseña</label>
+                    <input type="password" name="password" class="form-control login-input" placeholder="••••••••"
+                        required>
                 </div>
-                <button type="submit" class="btn btn-login w-100">Ingresar</button>
+                <button type="submit" class="btn btn-login">
+                    Ingresar <i class="fas fa-arrow-right ms-2"></i>
+                </button>
             </form>
+
+            <div class="mt-4">
+                <a href="#" style="color: var(--text-light); text-decoration: none; font-size: 0.9rem;">¿Olvidaste tu
+                    contraseña?</a>
+            </div>
         </div>
     </div>
 
 </body>
+
 </html>

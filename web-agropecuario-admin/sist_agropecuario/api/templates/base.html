@@ -1,38 +1,58 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Admin Agro{% endblock %}</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
+
 <body>
     <div class="wrapper">
         <!-- Sidebar -->
         <div class="sidebar">
-            <h4>Admin Agro</h4>
-            <a href="{% url 'inicio' %}">Dashboard</a>
-            <a href="{% url 'listar_usuarios' %}">Usuarios</a>
-            <a href="{% url 'panel_usuarios_cultivos' %}">Usuario–Cultivo</a>
-            <a href="{% url 'listar_solicitudes' %}">Solicitudes</a>
-            <a href="{% url 'listar_proveedores' %}">Proveedores</a>
-            <a href="{% url 'listar_insumos' %}">Insumos</a>
-            <a href="{% url 'logout_custom' %}" class="text-danger">Salir</a>
+            <h4><i class="fas fa-leaf me-2"></i> Admin Agro</h4>
+            <a href="{% url 'inicio' %}" class="{% if request.resolver_match.url_name == 'inicio' %}active{% endif %}">
+                <i class="fas fa-home"></i> Dashboard
+            </a>
+            <a href="{% url 'listar_usuarios' %}" class="{% if 'usuario' in request.path %}active{% endif %}">
+                <i class="fas fa-users"></i> Usuarios
+            </a>
+            <a href="{% url 'panel_usuarios_cultivos' %}" class="{% if 'cultivo' in request.path %}active{% endif %}">
+                <i class="fas fa-seedling"></i> Usuario–Cultivo
+            </a>
+            <a href="{% url 'listar_solicitudes' %}" class="{% if 'solicitudes' in request.path %}active{% endif %}">
+                <i class="fas fa-clipboard-list"></i> Solicitudes
+            </a>
+            <a href="{% url 'listar_proveedores' %}" class="{% if 'proveedores' in request.path %}active{% endif %}">
+                <i class="fas fa-truck"></i> Proveedores
+            </a>
+            <a href="{% url 'listar_insumos' %}" class="{% if 'insumos' in request.path %}active{% endif %}">
+                <i class="fas fa-box-open"></i> Insumos
+            </a>
+            <a href="{% url 'logout_custom' %}" class="text-danger">
+                <i class="fas fa-sign-out-alt"></i> Salir
+            </a>
         </div>
 
         <!-- Contenido principal -->
         <div class="main-content">
             <!-- Topbar -->
-            <!-- Topbar -->
-<div class="topbar text-center mb-3">
-    {% if request.session.nombre %}
-        <h5 class="welcome-text">Bienvenido, {{ request.session.nombre }}</h5>
-    {% else %}
-        <h5 class="welcome-text">{% block header %}{% endblock %}</h5>
-    {% endif %}
-</div>
-
+            <div class="topbar">
+                <div class="date-display">
+                    <i class="far fa-calendar-alt"></i> {% now "l, d F Y" %}
+                </div>
+                {% if request.session.nombre %}
+                <h5 class="welcome-text">Bienvenido, <span>{{ request.session.nombre }}</span></h5>
+                {% else %}
+                <h5 class="welcome-text">{% block header %}{% endblock %}</h5>
+                {% endif %}
+            </div>
 
             <!-- Contenido dinámico -->
             <div class="content">
@@ -41,4 +61,5 @@
         </div>
     </div>
 </body>
+
 </html>

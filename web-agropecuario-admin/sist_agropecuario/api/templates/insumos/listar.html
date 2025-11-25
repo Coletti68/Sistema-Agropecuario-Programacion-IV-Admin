@@ -1,52 +1,91 @@
-{% extends 'base.html' %}
-{% block title %}Listado de Insumos{% endblock %}
+{% extends "base.html" %}
+
+{% block title %}Insumos - Admin Agro{% endblock %}
+
+{% block header %}Gestión de Insumos{% endblock %}
 
 {% block content %}
-<h2>📦 Insumos</h2>
-
-{# Mensaje global si hay insumos críticos #}
-{% if hay_critico %}
-<p style="color: red; font-weight: bold;">
-    ⚠️ Atención: Algunos insumos están por debajo del stock mínimo.
-</p>
-{% endif %}
-
-<table border="1" cellpadding="5" cellspacing="0">
-    <thead>
-        <tr>
-            <th>Nombre</th>
-            <th>Descripción</th>
-            <th>Precio</th>
-            <th>Stock</th>
-            <th>Stock mínimo</th>
-            <th>Estado</th>
-            <th>Acciones</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for insumo in insumos %}
-        <tr {% if insumo.critico %}style="background-color: #f8d7da;" title="Stock crítico"{% endif %}>
-            <td>{{ insumo.nombre }}</td>
-            <td>{{ insumo.descripcion }}</td>
-            <td>{{ insumo.precio }}</td>
-            <td>{{ insumo.stock }}</td>
-            <td>{{ insumo.stock_minimo }}</td>
-            <td>{% if insumo.activo %}✅ Activo{% else %}❌ Inactivo{% endif %}</td>
-            <td>
-                <a href="{% url 'editar_insumo' insumo.pk %}">Editar</a> |
-                {% if insumo.activo %}
-                    <a href="{% url 'desactivar_insumo' insumo.pk %}">Desactivar</a>
-                {% else %}
-                    <a href="{% url 'activar_insumo' insumo.pk %}">Activar</a>
-                {% endif %}
-            </td>
-        </tr>
-        {% empty %}
-        <tr><td colspan="7">No hay insumos registrados.</td></tr>
-        {% endfor %}
-    </tbody>
-</table>
-
-<br>
-<a href="{% url 'crear_insumo' %}">← Nuevo Insumo</a>
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="mb-0"><i class="fas fa-box-open me-2"></i>Lista de Insumos</h5>
+        <div>
+            {% if hay_critico %}
+            <a href="{% url 'insumos_stock_critico' %}" class="btn btn-warning btn-sm me-2">
+                <i class="fas fa-exclamation-triangle me-1"></i> Ver Stock Crítico
+            </a>
+            {% endif %}
+            <a href="{% url 'crear_insumo' %}" class="btn btn-primary btn-sm">
+                <i class="fas fa-plus me-1"></i> Nuevo Insumo
+            </a>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Precio</th>
+                        <th>Stock</th>
+                        <th>Proveedor</th>
+                        <th>Estado</th>
+                        <th class="text-end">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for insumo in insumos %}
+                    <tr class="{% if insumo.critico %}table-warning{% endif %}">
+                        <td>
+                            <div class="fw-bold">{{ insumo.nombre }}</div>
+                            <small class="text-muted">{{ insumo.descripcion|truncatechars:30 }}</small>
+                        </td>
+                        <td>${{ insumo.precio }}</td>
+                        <td>
+                            {% if insumo.critico %}
+                            <span class="text-danger fw-bold"><i class="fas fa-exclamation-circle"></i> {{ insumo.stock
+                                }}</span>
+                            {% else %}
+                            {{ insumo.stock }}
+                            {% endif %}
+                            <small class="text-muted d-block">Min: {{ insumo.stock_minimo }}</small>
+                        </td>
+                        <td>{{ insumo.proveedor.nombre }}</td>
+                        <td>
+                            {% if insumo.activo %}
+                            <span class="badge bg-success">Activo</span>
+                            {% else %}
+                            <span class="badge bg-danger">Inactivo</span>
+                            {% endif %}
+                        </td>
+                        <td class="text-end">
+                            <a href="{% url 'editar_insumo' insumo.pk %}" class="btn btn-sm btn-outline-primary"
+                                title="Editar">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            {% if insumo.activo %}
+                            <a href="{% url 'desactivar_insumo' insumo.pk %}" class="btn btn-sm btn-outline-danger"
+                                title="Desactivar" onclick="return confirm('¿Estás seguro de desactivar este insumo?')">
+                                <i class="fas fa-ban"></i>
+                            </a>
+                            {% else %}
+                            <a href="{% url 'activar_insumo' insumo.pk %}" class="btn btn-sm btn-outline-success"
+                                title="Activar" onclick="return confirm('¿Estás seguro de activar este insumo?')">
+                                <i class="fas fa-check"></i>
+                            </a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6" class="text-center py-4 text-muted">
+                            <i class="fas fa-boxes fa-2x mb-2"></i>
+                            <p class="mb-0">No hay insumos registrados</p>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
 {% endblock %}

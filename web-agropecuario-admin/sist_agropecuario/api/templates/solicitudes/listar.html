@@ -1,75 +1,107 @@
-{% extends 'base.html' %}
-{% block title %}Listado de Solicitudes{% endblock %}
+{% extends "base.html" %}
+
+{% block title %}Solicitudes - Admin Agro{% endblock %}
+
+{% block header %}Gestión de Solicitudes{% endblock %}
 
 {% block content %}
-<h2>📑 Solicitudes</h2>
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="mb-0"><i class="fas fa-clipboard-list me-2"></i>Lista de Solicitudes</h5>
 
-<form method="get" style="margin-bottom: 15px;">
-    <label>Filtrar por estado:</label>
-    <select name="estadoid">
-        <option value="">Todos</option>
-        {% for estado in estados %}
-            <option value="{{ estado.pk }}"
-                {% if estado_seleccionado == estado.pk %}selected{% endif %}>
-                {{ estado.nombre }}
-            </option>
-        {% endfor %}
-    </select>
-    <button class="btn btn-primary btn-sm" type="submit">Filtrar</button>
-</form>
+        <form class="d-flex" method="GET">
+            <select name="estadoid" class="form-select form-select-sm me-2" onchange="this.form.submit()">
+                <option value="">Todos los estados</option>
+                {% for estado in estados %}
+                <option value="{{ estado.pk }}" {% if estado_seleccionado==estado.pk %}selected{% endif %}>
+                    {{ estado.nombre }}
+                </option>
+                {% endfor %}
+            </select>
+        </form>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>#</th>
+                        <th>Usuario</th>
+                        <th>Fecha</th>
+                        <th>Estado</th>
+                        <th class="text-end">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for solicitud in solicitudes %}
+                    <tr>
+                        <td>{{ solicitud.pk }}</td>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <div class="avatar-circle me-2">
+                                    {{ solicitud.usuario.nombre|first|upper }}
+                                </div>
+                                <div>
+                                    <div class="fw-bold">{{ solicitud.usuario.nombre }}</div>
+                                    <small class="text-muted">{{ solicitud.usuario.email }}</small>
+                                </div>
+                            </div>
+                        </td>
+                        <td>{{ solicitud.fechasolicitud|date:"d/m/Y H:i" }}</td>
+                        <td>
+                            {% if solicitud.estadosolicitudid.nombre == 'PENDIENTE' %}
+                            <span class="badge bg-warning text-dark">{{ solicitud.estadosolicitudid.nombre }}</span>
+                            {% elif solicitud.estadosolicitudid.nombre == 'APROBADA' %}
+                            <span class="badge bg-info text-dark">{{ solicitud.estadosolicitudid.nombre }}</span>
+                            {% elif solicitud.estadosolicitudid.nombre == 'ENTREGADA' %}
+                            <span class="badge bg-success">{{ solicitud.estadosolicitudid.nombre }}</span>
+                            {% elif solicitud.estadosolicitudid.nombre == 'RECHAZADA' %}
+                            <span class="badge bg-danger">{{ solicitud.estadosolicitudid.nombre }}</span>
+                            {% else %}
+                            <span class="badge bg-secondary">{{ solicitud.estadosolicitudid.nombre }}</span>
+                            {% endif %}
+                        </td>
+                        <td class="text-end">
+                            <a href="{% url 'detalle_solicitud' solicitud.pk %}" class="btn btn-sm btn-outline-primary"
+                                title="Ver Detalle">
+                                <i class="fas fa-eye"></i>
+                            </a>
+                            {% if solicitud.estadosolicitudid.nombre != 'ENTREGADA' and
+                            solicitud.estadosolicitudid.nombre != 'RECHAZADA' %}
+                            <a href="{% url 'procesar_solicitud' solicitud.pk %}" class="btn btn-sm btn-outline-success"
+                                title="Procesar Entrega"
+                                onclick="return confirm('¿Confirmar entrega de insumos? Esto descontará stock.')">
+                                <i class="fas fa-check-double"></i>
+                            </a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="text-center py-4 text-muted">
+                            <i class="fas fa-inbox fa-2x mb-2"></i>
+                            <p class="mb-0">No hay solicitudes registradas</p>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Usuario</th>
-            <th>Estado</th>
-            <th>Fecha</th>
-            <th>Acciones</th>
-        </tr>
-    </thead>
-
-    <tbody>
-        {% for solicitud in solicitudes %}
-        <tr>
-            <td>{{ solicitud.solicitudid }}</td>
-            <td>{{ solicitud.usuario.nombre }}</td>
-            <td>{{ solicitud.estadosolicitudid.nombre }}</td>
-            <td>{{ solicitud.fechasolicitud }}</td>
-
-            <td>
-                <a class="btn btn-info" href="{% url 'detalle_solicitud' solicitud.pk %}">Detalles</a>
-                <a href="{% url 'historial_solicitud' solicitud.pk %}">Ver Historial</a>
-
-
-
-                {% if solicitud.estadosolicitudid.nombre != "Entregado" %}
-                <a class="btn btn-success"
-                   href="{% url 'procesar_solicitud' solicitud.pk %}">
-                   Procesar
-                </a>
-                {% endif %}
-
-                <form action="{% url 'cambiar_estado_solicitud' solicitud.pk %}"
-                      method="POST" style="display:inline;">
-                    {% csrf_token %}
-                    <select name="estadoid">
-                        {% for estado in estados %}
-                        <option value="{{ estado.pk }}"
-                            {% if estado.pk == solicitud.estadosolicitudid.pk %}selected{% endif %}>
-                            {{ estado.nombre }}
-                        </option>
-                        {% endfor %}
-                    </select>
-                    <button class="btn btn-primary btn-sm" type="submit">Cambiar</button>
-                </form>
-            </td>
-        </tr>
-        {% empty %}
-        <tr><td colspan="5">No hay solicitudes registradas.</td></tr>
-        {% endfor %}
-    </tbody>
-</table>
-
-<a href="{% url 'inicio' %}" class="btn btn-dark">← Volver</a>
+<style>
+    .avatar-circle {
+        width: 35px;
+        height: 35px;
+        background-color: var(--primary-color);
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 0.9rem;
+    }
+</style>
 {% endblock %}

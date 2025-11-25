@@ -1,32 +1,51 @@
-{% extends 'base.html' %}
-{% block title %}Crear Proveedor{% endblock %}
+{% extends "base.html" %}
+
+{% block title %}Nuevo Proveedor - Admin Agro{% endblock %}
+
+{% block header %}Nuevo Proveedor{% endblock %}
+
 {% block content %}
-<h2>Nuevo Proveedor</h2>
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-plus-circle me-2"></i>Registrar Proveedor</h5>
+            </div>
+            <div class="card-body">
+                <form method="POST">
+                    {% csrf_token %}
 
-{% for message in messages %}
-    <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">{{ message }}</div>
-{% endfor %}
+                    <div class="mb-3">
+                        <label class="form-label">Nombre de la Empresa <span class="text-danger">*</span></label>
+                        <input type="text" name="nombre" class="form-control" required
+                            placeholder="Ej: AgroInsumos S.A.">
+                    </div>
 
-<form method="post">
-    {% csrf_token %}
-    <label>Nombre:</label><br>
-    <input type="text" name="nombre" required><br><br>
+                    <div class="mb-3">
+                        <label class="form-label">Persona de Contacto</label>
+                        <input type="text" name="contacto" class="form-control" placeholder="Ej: Juan Pérez">
+                    </div>
 
-    <label>Contacto:</label><br>
-    <input type="text" name="contacto"><br><br>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Teléfono</label>
+                            <input type="text" name="telefono" class="form-control" placeholder="Ej: +54 9 11...">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Email</label>
+                            <input type="email" name="email" class="form-control" placeholder="contacto@empresa.com">
+                        </div>
+                    </div>
 
-    <label>Email:</label><br>
-    <input type="email" name="email"><br><br>
-
-    <label>Teléfono:</label><br>
-    <input type="text" name="telefono"><br><br>
-
-    <button type="submit">Guardar</button>
-</form>
-<a href="{% url 'listar_proveedores' %}">← Volver al listado</a>
-{% endblock %}
-{% for message in messages %}
-<div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
-    {{ message }}
+                    <div class="d-flex justify-content-end gap-2 mt-3">
+                        <a href="{% url 'listar_proveedores' %}" class="btn btn-secondary">Cancelar</a>
+                        <button type="submit" class="btn btn-success">
+                            <i class="fas fa-save me-1"></i> Guardar Proveedor
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
-{% endfor %}
+{% endblock %}

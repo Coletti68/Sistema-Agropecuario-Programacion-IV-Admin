@@ -1,49 +1,78 @@
-{% extends 'base.html' %}
-{% block title %}Listado de Proveedores{% endblock %}
+{% extends "base.html" %}
+
+{% block title %}Proveedores - Admin Agro{% endblock %}
+
+{% block header %}Gestión de Proveedores{% endblock %}
+
 {% block content %}
-<h2>🏢 Proveedores</h2>
-
-{% for message in messages %}
-    <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">{{ message }}</div>
-{% endfor %}
-
-<table>
-    <thead>
-        <tr>
-            <th>Nombre</th>
-            <th>Contacto</th>
-            <th>Teléfono</th>
-            <th>Email</th>
-            <th>Estado</th>
-            <th>Acciones</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for proveedor in proveedores %}
-        <tr>
-            <td>{{ proveedor.nombre }}</td>
-            <td>{{ proveedor.contacto }}</td>
-            <td>{{ proveedor.telefono }}</td>
-            <td>{{ proveedor.email }}</td>
-            <td>{% if proveedor.activo %}✅ Activo{% else %}❌ Inactivo{% endif %}</td>
-            <td>
-                <a href="{% url 'editar_proveedor' proveedor.pk %}">Editar</a> |
-                {% if proveedor.activo %}
-                    <a href="{% url 'desactivar_proveedor' proveedor.pk %}">Desactivar</a>
-                {% else %}
-                    <a href="{% url 'activar_proveedor' proveedor.pk %}">Activar</a>
-                {% endif %}
-            </td>
-        </tr>
-        {% empty %}
-        <tr><td colspan="6">No hay proveedores registrados.</td></tr>
-        {% endfor %}
-    </tbody>
-</table>
-<a href="{% url 'crear_proveedor' %}">← Nuevo Proveedor</a>
-{% endblock %}
-{% for message in messages %}
-<div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
-    {{ message }}
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="mb-0"><i class="fas fa-truck me-2"></i>Lista de Proveedores</h5>
+        <a href="{% url 'crear_proveedor' %}" class="btn btn-primary btn-sm">
+            <i class="fas fa-plus me-1"></i> Nuevo Proveedor
+        </a>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Contacto</th>
+                        <th>Teléfono</th>
+                        <th>Email</th>
+                        <th>Estado</th>
+                        <th class="text-end">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for proveedor in proveedores %}
+                    <tr>
+                        <td class="fw-bold">{{ proveedor.nombre }}</td>
+                        <td>{{ proveedor.contacto|default:"-" }}</td>
+                        <td>{{ proveedor.telefono|default:"-" }}</td>
+                        <td>{{ proveedor.email|default:"-" }}</td>
+                        <td>
+                            {% if proveedor.activo %}
+                            <span class="badge bg-success">Activo</span>
+                            {% else %}
+                            <span class="badge bg-danger">Inactivo</span>
+                            {% endif %}
+                        </td>
+                        <td class="text-end">
+                            <a href="{% url 'listar_insumos_por_proveedor' proveedor.pk %}"
+                                class="btn btn-sm btn-outline-info" title="Ver Insumos">
+                                <i class="fas fa-box-open"></i>
+                            </a>
+                            <a href="{% url 'editar_proveedor' proveedor.pk %}" class="btn btn-sm btn-outline-primary"
+                                title="Editar">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            {% if proveedor.activo %}
+                            <a href="{% url 'desactivar_proveedor' proveedor.pk %}"
+                                class="btn btn-sm btn-outline-danger" title="Desactivar"
+                                onclick="return confirm('¿Estás seguro de desactivar este proveedor?')">
+                                <i class="fas fa-ban"></i>
+                            </a>
+                            {% else %}
+                            <a href="{% url 'activar_proveedor' proveedor.pk %}" class="btn btn-sm btn-outline-success"
+                                title="Activar" onclick="return confirm('¿Estás seguro de activar este proveedor?')">
+                                <i class="fas fa-check"></i>
+                            </a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6" class="text-center py-4 text-muted">
+                            <i class="fas fa-truck-loading fa-2x mb-2"></i>
+                            <p class="mb-0">No hay proveedores registrados</p>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
-{% endfor %}
+{% endblock %}
