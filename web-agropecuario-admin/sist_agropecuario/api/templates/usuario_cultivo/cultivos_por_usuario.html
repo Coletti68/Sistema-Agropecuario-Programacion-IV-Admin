@@ -1,0 +1,22 @@
+<h2>Cultivos asignados a {{ usuario.nombre }}</h2>
+
+<table border="1" cellpadding="5">
+    <tr>
+        <th>Cultivo</th>
+        <th>Latitud</th>
+        <th>Longitud</th>
+        <th>Fecha Siembra</th>
+    </tr>
+    {% for a in asignaciones %}
+    <tr>
+        <td>{{ a.cultivoid.nombre }}</td>
+        <td>{{ a.latitud }}</td>
+        <td>{{ a.longitud }}</td>
+        <td>{{ a.fechasiembra }}</td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="4">No hay cultivos asignados</td></tr>
+    {% endfor %}
+</table>
+
+<a href="{% url 'panel_usuarios_cultivos' %}">Volver</a>

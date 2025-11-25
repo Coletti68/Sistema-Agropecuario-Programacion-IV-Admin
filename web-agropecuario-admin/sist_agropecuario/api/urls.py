@@ -6,9 +6,13 @@ from .views import auth, inicio
 from .views.solicitudes import (
     listar_solicitudes,
     detalle_solicitud,
+    procesar_solicitud,
+    listar_comprobantes,
+    ver_comprobante,
     historial_solicitud,
     cambiar_estado_solicitud
 )
+
 
 urlpatterns = [
     # Inicio y login
@@ -17,11 +21,25 @@ urlpatterns = [
     path('logout/', auth.logout_custom, name='logout_custom'),
 
     # Usuarios
-    path('usuarios/', views.listar_usuarios, name='listar_usuarios'),
-    path('usuarios/nuevo/', views.crear_usuario, name='crear_usuario'),
-    path('usuarios/<int:pk>/editar/', views.editar_usuario, name='editar_usuario'),
-    path('usuarios/<int:pk>/desactivar/', views.desactivar_usuario, name='desactivar_usuario'),
-    path('usuarios/<int:pk>/activar/', views.activar_usuario, name='activar_usuario'),
+    # Usuarios
+path('usuarios/', views.listar_usuarios, name='listar_usuarios'),
+path('usuarios/nuevo/', views.crear_usuario, name='crear_usuario'),
+path('usuarios/<int:pk>/editar/', views.editar_usuario, name='editar_usuario'),
+path('usuarios/<int:pk>/desactivar/', views.desactivar_usuario, name='desactivar_usuario'),
+path('usuarios/<int:pk>/activar/', views.activar_usuario, name='activar_usuario'),
+
+path('cultivos/asignados/usuario/<int:usuarioId>/', 
+     views.ver_cultivos_asignados, name='ver_cultivos_asignados'),
+
+
+   path('usuariocultivos/panel/', views.panel_usuarios_cultivos, name='panel_usuarios_cultivos'),
+    path('usuariocultivos/nuevo/', views.crear_usuariocultivo, name='crear_usuariocultivo'),
+    path('usuariocultivos/<int:pk>/editar/', views.editar_usuariocultivo, name='editar_usuariocultivo'),
+    path('usuariocultivos/usuario/<int:usuarioId>/', views.cultivos_por_usuario, name='cultivos_por_usuario'),
+    path('usuariocultivos/cultivo/<int:cultivoId>/', views.usuarios_por_cultivo, name='usuarios_por_cultivo'),
+
+
+    
 
     # Cultivos
     path('cultivos/', views.listar_cultivos, name='listar_cultivos'),
@@ -30,7 +48,7 @@ urlpatterns = [
     path('cultivos/<int:pk>/desactivar/', views.desactivar_cultivo, name='desactivar_cultivo'),
     path('cultivos/<int:pk>/activar/', views.activar_cultivo, name='activar_cultivo'),
     path('cultivos/usuario/<int:usuarioId>/', views.cultivos_por_usuario, name='cultivos_por_usuario'),
-    path('cultivos/asignados/', views.ver_cultivos_asignados, name='ver_cultivos_asignados'),
+
 
     # Proveedores
     path('proveedores/', views.listar_proveedores, name='listar_proveedores'),
@@ -57,6 +75,13 @@ path('usuariocultivos/<int:pk>/activar/', views.activar_usuariocultivo, name='ac
     # Solicitudes
     path('solicitudes/', listar_solicitudes, name='listar_solicitudes'),
     path('solicitudes/<int:pk>/', detalle_solicitud, name='detalle_solicitud'),
+    path('solicitudes/<int:pk>/procesar/', procesar_solicitud, name='procesar_solicitud'),
+
+    path('comprobantes/', listar_comprobantes, name='listar_comprobantes'),
+    path('comprobantes/<int:comprobante_id>/', ver_comprobante, name='ver_comprobante'),
     path('solicitudes/<int:pk>/historial/', historial_solicitud, name='historial_solicitud'),
-    path('solicitudes/<int:pk>/cambiar-estado/', cambiar_estado_solicitud, name='cambiar_estado_solicitud'),
+
+    # Solicitudes
+path('solicitudes/<int:pk>/cambiar-estado/', cambiar_estado_solicitud, name='cambiar_estado_solicitud'),
+
 ]

@@ -1,0 +1,27 @@
+<h2>Editar Asignación Usuario-Cultivo</h2>
+
+<form method="post">
+    {% csrf_token %}
+
+    <label>Usuario:</label>
+    <select name="usuarioid">
+        {% for u in usuarios %}
+            <option value="{{ u.pk }}" {% if u.pk == asignacion.usuarioid.pk %}selected{% endif %}>{{ u.nombre }}</option>
+        {% endfor %}
+    </select><br>
+
+    <label>Cultivo:</label>
+    <select name="cultivoid">
+        {% for c in cultivos %}
+            <option value="{{ c.pk }}" {% if c.pk == asignacion.cultivoid.pk %}selected{% endif %}>{{ c.nombre }}</option>
+        {% endfor %}
+    </select><br>
+
+    <label>Latitud:</label><input type="text" name="latitud" value="{{ asignacion.latitud }}"><br>
+    <label>Longitud:</label><input type="text" name="longitud" value="{{ asignacion.longitud }}"><br>
+    <label>Fecha Siembra:</label><input type="date" name="fechasiembra" value="{{ asignacion.fechasiembra }}"><br>
+
+    <button type="submit">Actualizar</button>
+</form>
+
+<a href="{% url 'panel_usuarios_cultivos' %}">Volver</a>

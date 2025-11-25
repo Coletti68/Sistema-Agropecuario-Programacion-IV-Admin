@@ -1,14 +1,38 @@
 {% extends 'base.html' %}
-{% block title %}Detalle Solicitud{% endblock %}
+{% block title %}Detalle de Solicitud #{{ solicitud.solicitudid }}{% endblock %}
 
 {% block content %}
-<h2>Detalle de Solicitud #{{ solicitud.solicitudid }}</h2>
+<h2>Detalles de la Solicitud #{{ solicitud.solicitudid }}</h2>
 
-<ul>
-    {% for item in detalles %}
-    <li>{{ item.insumo.nombre }} — Cantidad: {{ item.cantidad }}</li>
-    {% endfor %}
-</ul>
+<p><strong>Usuario:</strong> {{ solicitud.usuario.nombre }}</p>
+<p><strong>Estado:</strong> {{ solicitud.estadosolicitudid.nombre }}</p>
+<p><strong>Fecha:</strong> {{ solicitud.fechasolicitud }}</p>
 
-<a class="btn btn-secondary" href="{% url 'listar_solicitudes' %}">← Volver</a>
+<h3>Items de la Solicitud</h3>
+<table border="1" cellpadding="5" cellspacing="0">
+    <thead>
+        <tr>
+            <th>Insumo</th>
+            <th>Cantidad</th>
+            <th>Precio Unitario</th>
+            <th>Subtotal</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in detalles %}
+        <tr>
+            <td>{{ item.insumo.nombre }}</td>
+            <td>{{ item.cantidad }}</td>
+            <td>{{ item.preciounitario }}</td>
+            <td>{{ item.subtotal }}</td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="4">No hay items en esta solicitud.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<p><strong>Total General:</strong> {{ total_general }}</p>
+
+<a href="{% url 'listar_solicitudes' %}">← Volver a Solicitudes</a>
 {% endblock %}

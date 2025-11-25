@@ -16,13 +16,15 @@
     <label>Stock inicial:</label><br>
     <input type="number" name="stock" min="0"><br><br>
 
+    <label>Stock mínimo:</label><br>
+    <input type="number" name="stock_minimo" min="0"><br><br>
+
     <label>Proveedor:</label><br>
     <select name="proveedor_id" required>
         {% for proveedor in proveedores %}
         <option value="{{ proveedor.pk }}">{{ proveedor.nombre }}</option>
         {% endfor %}
     </select><br><br>
-    
 
     <button type="submit">Guardar</button>
 </form>

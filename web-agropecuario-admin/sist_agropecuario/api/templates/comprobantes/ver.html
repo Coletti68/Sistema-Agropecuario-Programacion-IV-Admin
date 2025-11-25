@@ -1,12 +1,36 @@
 {% extends 'base.html' %}
-{% block title %}Ver Comprobante{% endblock %}
-{% block content %}
-<h2>Comprobante #{{ comprobante.pk }}</h2>
-<p><strong>Usuario:</strong> {{ comprobante.usuario.nombre }}</p>
-<p><strong>Fecha:</strong> {{ comprobante.fecha }}</p>
-<p><strong>Monto:</strong> {{ comprobante.monto }}</p>
-<p><strong>Detalle:</strong> {{ comprobante.detalle }}</p>
+{% block title %}Comprobante {{ comprobante.comprobanteid }}{% endblock %}
 
-<a href="{% url 'listar_comprobantes' %}">← Volver al listado</a>
+{% block content %}
+<h2>📄 Comprobante de Entrega #{{ comprobante.comprobanteid }}</h2>
+
+<p><strong>Solicitud:</strong> {{ comprobante.solicitud.solicitudid }}</p>
+<p><strong>Fecha de Entrega:</strong> {{ comprobante.fechaentrega }}</p>
+<p><strong>Total:</strong> {{ comprobante.total }}</p>
+<p><strong>Entregado por:</strong> {{ comprobante.entregadopor }}</p>
+<p><strong>Recibido por:</strong> {{ comprobante.recibidopor }}</p>
+
+<h3>Detalles de la Solicitud:</h3>
+<table border="1" cellpadding="5" cellspacing="0">
+    <thead>
+        <tr>
+            <th>Insumo</th>
+            <th>Cantidad</th>
+            <th>Precio Unitario</th>
+            <th>Subtotal</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in comprobante.solicitud.solicituddetalle_set.all %}
+        <tr>
+            <td>{{ item.insumo.nombre }}</td>
+            <td>{{ item.cantidad }}</td>
+            <td>{{ item.preciounitario }}</td>
+            <td>{{ item.cantidad|floatformat:2|add:"0.00"|floatformat:2 }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<a href="{% url 'listar_comprobantes' %}">← Volver a Comprobantes</a>
 {% endblock %}
- 

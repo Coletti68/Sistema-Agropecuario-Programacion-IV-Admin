@@ -4,9 +4,14 @@ from ..models import Insumo, Proveedor
 from django.db.models import F
 
 # Listar insumos
+# insumo.py -> listar_insumos
 def listar_insumos(request):
-    insumos = Insumo.objects.all()  # mostramos todos, activos o no
-    return render(request, 'insumos/listar.html', {'insumos': insumos})
+    insumos = Insumo.objects.all()
+    hay_critico = any(insumo.stock <= insumo.stock_minimo for insumo in insumos)
+    for insumo in insumos:
+        insumo.critico = insumo.stock <= insumo.stock_minimo
+    return render(request, 'insumos/listar.html', {'insumos': insumos, 'hay_critico': hay_critico})
+
 
 # Crear insumo
 def crear_insumo(request):

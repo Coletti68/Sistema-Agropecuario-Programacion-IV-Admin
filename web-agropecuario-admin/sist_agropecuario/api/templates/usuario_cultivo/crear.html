@@ -1,0 +1,26 @@
+<h2>Crear Asignación Usuario-Cultivo</h2>
+
+<form method="post">
+    {% csrf_token %}
+    <label>Usuario:</label>
+    <select name="usuarioid">
+        {% for u in usuarios %}
+            <option value="{{ u.pk }}">{{ u.nombre }}</option>
+        {% endfor %}
+    </select><br>
+
+    <label>Cultivo:</label>
+    <select name="cultivoid">
+        {% for c in cultivos %}
+            <option value="{{ c.pk }}">{{ c.nombre }}</option>
+        {% endfor %}
+    </select><br>
+
+    <label>Latitud:</label><input type="text" name="latitud"><br>
+    <label>Longitud:</label><input type="text" name="longitud"><br>
+    <label>Fecha Siembra:</label><input type="date" name="fechasiembra"><br>
+
+    <button type="submit">Crear</button>
+</form>
+
+<a href="{% url 'panel_usuarios_cultivos' %}">Volver</a>

@@ -7,7 +7,6 @@
     <title>{% block title %}Admin Agro{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
-
 </head>
 <body>
     <div class="d-flex">
@@ -18,7 +17,8 @@
             <h4 class="text-center">Admin Agro</h4>
             <a href="{% url 'inicio' %}">Dashboard</a>
             <a href="{% url 'listar_usuarios' %}">Usuarios</a>
-            <a href="{% url 'ver_cultivos_asignados' %}">Usuario–Cultivo</a>
+            <!-- Apunta al panel general de Usuario-Cultivo -->
+            <a href="{% url 'panel_usuarios_cultivos' %}">Usuario–Cultivo</a>
             <a href="{% url 'listar_solicitudes' %}">Solicitudes</a>
             <a href="{% url 'listar_proveedores' %}">Proveedores</a>
             <a href="{% url 'listar_insumos' %}">Insumos</a>

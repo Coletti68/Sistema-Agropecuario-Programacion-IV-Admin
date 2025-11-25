@@ -1,8 +1,17 @@
 {% extends 'base.html' %}
 {% block title %}Listado de Insumos{% endblock %}
+
 {% block content %}
 <h2>📦 Insumos</h2>
-<table>
+
+{# Mensaje global si hay insumos críticos #}
+{% if hay_critico %}
+<p style="color: red; font-weight: bold;">
+    ⚠️ Atención: Algunos insumos están por debajo del stock mínimo.
+</p>
+{% endif %}
+
+<table border="1" cellpadding="5" cellspacing="0">
     <thead>
         <tr>
             <th>Nombre</th>
@@ -16,7 +25,7 @@
     </thead>
     <tbody>
         {% for insumo in insumos %}
-        <tr>
+        <tr {% if insumo.critico %}style="background-color: #f8d7da;" title="Stock crítico"{% endif %}>
             <td>{{ insumo.nombre }}</td>
             <td>{{ insumo.descripcion }}</td>
             <td>{{ insumo.precio }}</td>
@@ -37,5 +46,7 @@
         {% endfor %}
     </tbody>
 </table>
+
+<br>
 <a href="{% url 'crear_insumo' %}">← Nuevo Insumo</a>
 {% endblock %}

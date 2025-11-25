@@ -1,24 +1,35 @@
 {% extends 'base.html' %}
-{% block title %}Comprobantes{% endblock %}
+{% block title %}Comprobantes de Entrega{% endblock %}
+
 {% block content %}
-<h2>Comprobantes</h2>
-<table>
-    <tr>
-        <th>ID</th>
-        <th>Usuario</th>
-        <th>Fecha</th>
-        <th>Acciones</th>
-    </tr>
-    {% for comprobante in comprobantes %}
-    <tr>
-        <td>{{ comprobante.pk }}</td>
-        <td>{{ comprobante.usuario.nombre }}</td>
-        <td>{{ comprobante.fecha }}</td>
-        <td><a href="{% url 'ver_comprobante' comprobante.pk %}">Ver</a></td>
-    </tr>
-    {% empty %}
-    <tr><td colspan="4">No hay comprobantes registrados.</td></tr>
-    {% endfor %}
+<h2>📄 Comprobantes de Entrega</h2>
+
+<table border="1" cellpadding="5" cellspacing="0">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Solicitud</th>
+            <th>Fecha Entrega</th>
+            <th>Total</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for c in comprobantes %}
+        <tr>
+            <td>{{ c.comprobanteid }}</td>
+            <td>{{ c.solicitud.solicitudid }}</td>
+            <td>{{ c.fechaentrega }}</td>
+            <td>{{ c.total }}</td>
+            <td>
+                <a href="{% url 'ver_comprobante' c.pk %}">Ver</a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="5">No hay comprobantes registrados.</td></tr>
+        {% endfor %}
+    </tbody>
 </table>
-<a href="{% url 'generar_comprobante' %}">➕ Generar Comprobante</a>
+
+<a href="{% url 'inicio' %}">← Volver</a>
 {% endblock %}

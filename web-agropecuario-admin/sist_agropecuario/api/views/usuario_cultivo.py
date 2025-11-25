@@ -1,11 +1,11 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
-from ..models import UsuarioCultivo, Usuario, Cultivo
 from django.http import JsonResponse
+from ..models import UsuarioCultivo, Usuario, Cultivo
+
 # ==========================
 # Panel de asignaciones
 # ==========================
-
 def panel_usuarios_cultivos(request):
     cultivo_id = request.GET.get('cultivoid')
     usuario_id = request.GET.get('usuarioid')
@@ -24,6 +24,8 @@ def panel_usuarios_cultivos(request):
         'asignaciones': asignaciones,
         'usuarios': usuarios,
         'cultivos': cultivos,
+        'usuario_id': int(usuario_id) if usuario_id else None,
+        'cultivo_id': int(cultivo_id) if cultivo_id else None,
     })
 
 
@@ -86,7 +88,7 @@ def editar_usuariocultivo(request, pk):
 
 
 # ==========================
-# Desactivar asignación
+# Activar / Desactivar
 # ==========================
 def desactivar_usuariocultivo(request, pk):
     asignacion = get_object_or_404(UsuarioCultivo, pk=pk)
@@ -96,9 +98,6 @@ def desactivar_usuariocultivo(request, pk):
     return redirect('panel_usuarios_cultivos')
 
 
-# ==========================
-# Activar asignación
-# ==========================
 def activar_usuariocultivo(request, pk):
     asignacion = get_object_or_404(UsuarioCultivo, pk=pk)
     asignacion.activo = True
@@ -107,28 +106,48 @@ def activar_usuariocultivo(request, pk):
     return redirect('panel_usuarios_cultivos')
 
 
-# GET /usuariocultivos/usuario/:usuarioId
+# ==========================
+# Vista HTML: cultivos por usuario
+# ==========================
+def cultivos_por_usuario_html(request, usuarioId):
+    usuario = get_object_or_404(Usuario, pk=usuarioId)
+    asignaciones = UsuarioCultivo.objects.filter(usuarioid=usuario).select_related('cultivoid')
+    return render(request, 'usuario_cultivo/cultivos_por_usuario.html', {
+        'usuario': usuario,
+        'asignaciones': asignaciones
+    })
+
+
+# ==========================
+# 🔥 API JSON FALTANTES 🔥
+# ==========================
+
+# ✔ Cultivos por usuario
 def cultivos_por_usuario(request, usuarioId):
     usuario = get_object_or_404(Usuario, pk=usuarioId)
-    asignaciones = UsuarioCultivo.objects.filter(usuarioid=usuario, activo=True).select_related('cultivoid')
-    data = [{
-        'id': a.usuariocultivoid,
-        'cultivo': a.cultivoid.nombre,
-        'latitud': a.latitud,
-        'longitud': a.longitud,
-        'fechasiembra': a.fechasiembra
-    } for a in asignaciones]
-    print("JSON asignaciones:", data)  # debug
-    return JsonResponse(data, safe=False)
-# GET /usuariocultivos/cultivo/:cultivoId
+
+    # ❌ No existe campo activo → se quita
+    asignaciones = UsuarioCultivo.objects.filter(
+        usuarioid=usuario
+    ).select_related('cultivoid')
+
+    return render(request, 'usuario_cultivo/cultivos_por_usuario.html', {
+        'usuario': usuario,
+        'asignaciones': asignaciones
+    })
+
+
+
+# ✔ Usuarios por cultivo
 def usuarios_por_cultivo(request, cultivoId):
     cultivo = get_object_or_404(Cultivo, pk=cultivoId)
-    asignaciones = UsuarioCultivo.objects.filter(cultivoid=cultivo)
-    data = [{
-        'id': a.usuariocultivoid,
-        'usuario': a.usuarioid.nombre,
-        'latitud': a.latitud,
-        'longitud': a.longitud,
-        'fechasiembra': a.fechasiembra
-    } for a in asignaciones]
-    return JsonResponse(data, safe=False)
+
+    asignaciones = UsuarioCultivo.objects.filter(
+        cultivoid=cultivo
+    ).select_related('usuarioid')
+
+    return render(request, 'usuario_cultivo/usuarios_por_cultivo.html', {
+        'cultivo': cultivo,
+        'asignaciones': asignaciones
+    })
+

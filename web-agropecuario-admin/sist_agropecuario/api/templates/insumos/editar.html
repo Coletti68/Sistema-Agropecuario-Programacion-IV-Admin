@@ -13,6 +13,9 @@
     <label>Stock:</label><br>
     <input type="number" name="stock" value="{{ insumo.stock }}" min="0" required><br><br>
 
+    <label>Stock mínimo:</label><br>
+    <input type="number" name="stock_minimo" value="{{ insumo.stock_minimo }}" min="0"><br><br>
+
     <label>Proveedor:</label><br>
     <select name="proveedor_id">
         {% for proveedor in proveedores %}

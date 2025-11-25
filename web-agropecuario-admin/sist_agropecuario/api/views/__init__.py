@@ -31,9 +31,10 @@ from .usuario_cultivo import (
     editar_usuariocultivo,
     desactivar_usuariocultivo,
     activar_usuariocultivo,
-    cultivos_por_usuario,     # <--- aquí
-    usuarios_por_cultivo      # <--- y aquí
+    cultivos_por_usuario,
+    usuarios_por_cultivo
 )
+
 
 # 👉 PROVEEDORES
 from .proveedor import (
@@ -57,11 +58,13 @@ from .insumo import (
 
 
 # 👉 SOLICITUDES (versión HTML, NO JSON)
-from .solicitudes import (      # ← CORREGIDO
+from .solicitudes import (
     listar_solicitudes,
     detalle_solicitud,
-    historial_solicitud,
-    cambiar_estado_solicitud
+    procesar_solicitud,
+    listar_comprobantes,
+    ver_comprobante,
+    historial_solicitud 
 )
 
 # 👉 DETALLES DE SOLICITUD
