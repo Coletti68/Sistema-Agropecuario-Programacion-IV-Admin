@@ -1,31 +1,32 @@
 {% extends 'base.html' %}
-{% block title %}Editar Insumo{% endblock %}
+{% block title %}Editar Asignación{% endblock %}
+{% block header %}Editar Asignación Usuario-Cultivo{% endblock %}
+
 {% block content %}
-<h2>Editar Insumo</h2>
-<form method="post">
-    {% csrf_token %}
-    <label>Nombre:</label><br>
-    <input type="text" name="nombre" value="{{ insumo.nombre }}" required><br><br>
+<div class="card">
+    <form method="post">
+        {% csrf_token %}
 
-    <label>Descripción:</label><br>
-    <textarea name="descripcion">{{ insumo.descripcion }}</textarea><br><br>
+        <label>Usuario:</label>
+        <select name="usuarioid">
+            {% for u in usuarios %}
+                <option value="{{ u.pk }}" {% if u.pk == asignacion.usuarioid.pk %}selected{% endif %}>{{ u.nombre }}</option>
+            {% endfor %}
+        </select><br>
 
-    <label>Stock:</label><br>
-    <input type="number" name="stock" value="{{ insumo.stock }}" min="0" required><br><br>
+        <label>Cultivo:</label>
+        <select name="cultivoid">
+            {% for c in cultivos %}
+                <option value="{{ c.pk }}" {% if c.pk == asignacion.cultivoid.pk %}selected{% endif %}>{{ c.nombre }}</option>
+            {% endfor %}
+        </select><br>
 
-    <label>Stock mínimo:</label><br>
-    <input type="number" name="stock_minimo" value="{{ insumo.stock_minimo }}" min="0"><br><br>
+        <label>Latitud:</label><input type="text" name="latitud" value="{{ asignacion.latitud }}"><br>
+        <label>Longitud:</label><input type="text" name="longitud" value="{{ asignacion.longitud }}"><br>
+        <label>Fecha Siembra:</label><input type="date" name="fechasiembra" value="{{ asignacion.fechasiembra }}"><br><br>
 
-    <label>Proveedor:</label><br>
-    <select name="proveedor_id">
-        {% for proveedor in proveedores %}
-        <option value="{{ proveedor.pk }}" {% if insumo.proveedor.pk == proveedor.pk %}selected{% endif %}>
-            {{ proveedor.nombre }}
-        </option>
-        {% endfor %}
-    </select><br><br>
-
-    <button type="submit">Actualizar</button>
-</form>
-<a href="{% url 'listar_insumos' %}">← Volver al listado</a>
+        <button type="submit" class="btn-primary">Actualizar</button>
+        <a href="{% url 'panel_usuarios_cultivos' %}" class="btn-primary">Volver</a>
+    </form>
+</div>
 {% endblock %}

@@ -1,121 +1,268 @@
-/* --- Reset básico --- */
-body, html {
+/* ==========================
+   RESET & BASE
+========================== */
+* {
     margin: 0;
     padding: 0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f5f6fa;
+    box-sizing: border-box;
 }
 
-/* --- Sidebar --- */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f5f6fa;
+    color: #2f3640;
+}
+
+
+
+/* ==========================
+   WRAPPER
+========================== */
+.wrapper {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* ==========================
+   SIDEBAR
+========================== */
 .sidebar {
     width: 220px;
-    height: 100vh;
-    position: fixed;
-    top: 0;
-    left: 0;
-    background-color: #2f3640;
-    color: #f5f6fa;
+    background: #2ecc71; /* verde principal */
+    color: #fff;
     display: flex;
     flex-direction: column;
-    padding-top: 20px;
-    box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+    padding: 20px 15px;
+    border-right: 2px solid #27ae60;
 }
 
 .sidebar h4 {
     text-align: center;
     margin-bottom: 30px;
+    font-size: 1.5rem;
     font-weight: bold;
 }
 
 .sidebar a {
-    color: #f5f6fa;
     text-decoration: none;
-    padding: 12px 20px;
-    margin: 4px 0;
-    border-radius: 5px;
-    transition: 0.3s;
+    color: #fff;
+    padding: 12px 15px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    transition: all 0.3s ease;
 }
 
 .sidebar a:hover {
-    background-color: #718093;
-    color: #fff;
+    background-color: rgba(255, 255, 255, 0.2);
 }
 
-/* --- Topbar --- */
+.sidebar a.text-danger {
+    color: #e84118;
+}
+
+.sidebar a.text-danger:hover {
+    background-color: rgba(232, 65, 24, 0.2);
+}
+
+/* ==========================
+   MAIN CONTENT
+========================== */
+.main-content {
+    flex: 1;
+    background-color: #f5f6fa;
+    padding: 30px;
+}
+
+/* ==========================
+   TOPBAR / WELCOME MESSAGE
+========================== */
+
 .topbar {
+    width: 100%;
+    margin-bottom: 25px;
+}
+.welcome-text {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #2f3640;
+    text-align: center;
+    margin: 0;
+}
+
+/* ==========================
+   CONTENT AREA
+========================== */
+.content {
     background-color: #fff;
-    padding: 15px 20px;
-    border-bottom: 1px solid #dcdde1;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+}
+
+/* ==========================
+   FORMULARIOS
+========================== */
+form {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    flex-direction: column;
 }
 
-/* --- Contenido principal --- */
-.flex-grow-1 {
-    margin-left: 220px; /* ancho del sidebar */
-    padding: 20px;
+form label {
+    margin-bottom: 5px;
+    font-weight: 500;
+    color: #2f3640;
 }
 
-/* --- Tarjetas --- */
-.card {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 10px;
-    margin-bottom: 20px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-    transition: transform 0.2s;
+form input, form select, form textarea {
+    padding: 10px 12px;
+    border: 1px solid #dcdde1;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    transition: all 0.3s ease;
 }
 
-.card:hover {
-    transform: translateY(-3px);
+form input:focus, form select:focus, form textarea:focus {
+    outline: none;
+    border-color: #27ae60;
+    box-shadow: 0 0 5px rgba(39, 174, 96, 0.5);
 }
 
-/* --- Botones --- */
-.btn-primary {
-    background-color: #4cd137;
-    border: none;
+/* ==========================
+   BOTONES
+========================== */
+button, .btn {
     padding: 10px 20px;
-    border-radius: 6px;
-    transition: 0.3s;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.btn-primary {
+    background-color: #27ae60;
+    color: #fff;
 }
 
 .btn-primary:hover {
-    background-color: #44bd32;
+    background-color: #2ecc71;
+    transform: translateY(-2px);
 }
 
-/* --- Tablas --- */
+.btn-secondary {
+    background-color: #fff;
+    color: #27ae60;
+    border: 2px solid #27ae60;
+}
+
+.btn-secondary:hover {
+    background-color: #27ae60;
+    color: #fff;
+    transform: translateY(-2px);
+}
+
+/* ==========================
+   TABLAS
+========================== */
 table {
     width: 100%;
     border-collapse: collapse;
-    background-color: #fff;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    margin-top: 15px;
 }
 
-th, td {
+table th, table td {
     padding: 12px 15px;
+    border-bottom: 1px solid #dcdde1;
     text-align: left;
 }
 
-th {
-    background-color: #40739e;
+table th {
+    background-color: #2ecc71;
     color: #fff;
+    font-weight: 600;
+}
+/* ==========================
+   LOGIN
+========================== */
+.login-body {
+    background: linear-gradient(135deg, #2ecc71, #27ae60);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-tr:nth-child(even) {
-    background-color: #f1f2f6;
+.login-container {
+    width: 100%;
+    max-width: 400px;
+    padding: 20px;
 }
 
-/* --- Alertas --- */
+.login-card {
+    background-color: #fff;
+    border-radius: 15px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    padding: 30px;
+    width: 100%;
+}
+
+.login-card h2 {
+    color: #27ae60;
+    font-weight: bold;
+}
+
+.login-input {
+    border-radius: 8px;
+    border: 1px solid #dcdde1;
+    padding: 10px 12px;
+    transition: all 0.3s ease;
+}
+
+.login-input:focus {
+    outline: none;
+    border-color: #27ae60;
+    box-shadow: 0 0 5px rgba(39, 174, 96, 0.5);
+}
+
+.btn-login {
+    background-color: #27ae60;
+    color: #fff;
+    font-weight: 600;
+    padding: 10px;
+    border-radius: 8px;
+    border: none;
+    transition: all 0.3s ease;
+}
+
+.btn-login:hover {
+    background-color: #2ecc71;
+    transform: translateY(-2px);
+}
+
+/* Ajuste de alertas */
 .alert {
-    padding: 10px 15px;
-    border-radius: 5px;
+    border-radius: 8px;
+    font-size: 0.9rem;
 }
 
-.alert-danger {
-    background-color: #e84118;
-    color: #fff;
+
+/* ==========================
+   RESPONSIVE
+========================== */
+@media (max-width: 768px) {
+    .wrapper {
+        flex-direction: column;
+    }
+    .sidebar {
+        width: 100%;
+        flex-direction: row;
+        overflow-x: auto;
+    }
+    .sidebar a {
+        flex: 1 0 auto;
+        margin: 0 5px;
+    }
+    .main-content {
+        padding: 20px 10px;
+    }
 }
