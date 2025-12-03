@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'api'
+    'api',
+    'channels',
 ]
 
 MIDDLEWARE = [
@@ -71,6 +72,22 @@ TEMPLATES = [
     },
 ]
 
+ASGI_APPLICATION = "sist_agropecuario.asgi.application"
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("127.0.0.1", 6379)],
+        },
+    },
+}
+
+
+
+
+
+
+ASGI_APPLICATION = "sist_agropecuario.asgi.application"
 WSGI_APPLICATION = 'sist_agropecuario.wsgi.application'
 
 
@@ -115,8 +132,11 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'api', 'static'),
+   os.path.join(BASE_DIR, 'static'),
 ]
+
+
+STATIC_ROOT = os.path.join(BASE_DIR,'staticfiles')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field

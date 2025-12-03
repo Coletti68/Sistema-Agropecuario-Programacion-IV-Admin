@@ -3,13 +3,11 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Admin Agro{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
     <div class="wrapper">
-        <!-- Sidebar -->
         <div class="sidebar">
             <h4>Admin Agro</h4>
             <a href="{% url 'inicio' %}">Dashboard</a>
@@ -21,24 +19,21 @@
             <a href="{% url 'logout_custom' %}" class="text-danger">Salir</a>
         </div>
 
-        <!-- Contenido principal -->
         <div class="main-content">
-            <!-- Topbar -->
-            <!-- Topbar -->
-<div class="topbar text-center mb-3">
-    {% if request.session.nombre %}
-        <h5 class="welcome-text">Bienvenido, {{ request.session.nombre }}</h5>
-    {% else %}
-        <h5 class="welcome-text">{% block header %}{% endblock %}</h5>
-    {% endif %}
-</div>
+            <div class="topbar text-center mb-3">
+                {% if request.session.nombre %}
+                    <h5>Bienvenido, {{ request.session.nombre }}</h5>
+                {% else %}
+                    <h5>{% block header %}{% endblock %}</h5>
+                {% endif %}
+            </div>
 
-
-            <!-- Contenido dinámico -->
             <div class="content">
                 {% block content %}{% endblock %}
             </div>
         </div>
     </div>
+
+    <script src="{% static 'js/admin_notificaciones.js' %}"></script>
 </body>
 </html>

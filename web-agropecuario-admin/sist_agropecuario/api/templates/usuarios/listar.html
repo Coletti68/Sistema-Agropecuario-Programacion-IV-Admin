@@ -15,19 +15,15 @@
             <th>Acciones</th>
         </tr>
     </thead>
-
-    <tbody>
+    <tbody id="usuarios-tbody">
         {% for usuario in usuarios %}
         <tr>
             <td>{{ usuario.nombre }}</td>
             <td>{{ usuario.email }}</td>
             <td>{{ usuario.rol.nombre }}</td>
-            <td>
-                {% if usuario.activo %}Activo{% else %}Inactivo{% endif %}
-            </td>
+            <td>{% if usuario.activo %}Activo{% else %}Inactivo{% endif %}</td>
             <td>
                 <a href="{% url 'editar_usuario' usuario.pk %}" class="btn btn-warning">Editar</a>
-
                 {% if usuario.activo %}
                     <a href="{% url 'desactivar_usuario' usuario.pk %}" class="btn btn-danger">Desactivar</a>
                 {% else %}

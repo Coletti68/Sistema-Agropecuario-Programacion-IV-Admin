@@ -1,6 +1,9 @@
 from django.apps import AppConfig
 
-
 class ApiConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
     name = 'api'
+
+    def ready(self):
+        # Importar signals para que se registren los handlers
+        import api.signals  # noqa

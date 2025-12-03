@@ -1,7 +1,7 @@
 from django.urls import path
 from . import views
 from .views import auth, inicio
-
+from api.views.notify import notify_new_user
 # Importar correctamente las vistas de solicitudes
 from .views.solicitudes import (
     listar_solicitudes,
@@ -19,6 +19,11 @@ urlpatterns = [
     path('', inicio.inicio, name='inicio'),
     path('login/', auth.login_custom, name='login_custom'),
     path('logout/', auth.logout_custom, name='logout_custom'),
+
+
+
+path("notify-new-user/", notify_new_user, name="notify_new_user"),
+
 
     # Usuarios
     # Usuarios
@@ -39,7 +44,6 @@ path('cultivos/asignados/usuario/<int:usuarioId>/',
     path('usuariocultivos/cultivo/<int:cultivoId>/', views.usuarios_por_cultivo, name='usuarios_por_cultivo'),
 
 
-    
 
     # Cultivos
     path('cultivos/', views.listar_cultivos, name='listar_cultivos'),
