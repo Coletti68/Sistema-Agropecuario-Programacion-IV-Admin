@@ -1,11 +1,14 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}Admin Agro{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
+
 <body>
     <div class="wrapper">
         <div class="sidebar">
@@ -16,15 +19,17 @@
             <a href="{% url 'listar_solicitudes' %}">Solicitudes</a>
             <a href="{% url 'listar_proveedores' %}">Proveedores</a>
             <a href="{% url 'listar_insumos' %}">Insumos</a>
-            <a href="{% url 'logout_custom' %}" class="text-danger">Salir</a>
+            <a href="{% url 'logout_custom' %}" class="text-danger">
+                <i class="fas fa-sign-out-alt"></i> Salir
+            </a>
         </div>
 
         <div class="main-content">
             <div class="topbar text-center mb-3">
                 {% if request.session.nombre %}
-                    <h5>Bienvenido, {{ request.session.nombre }}</h5>
+                <h5>Bienvenido, {{ request.session.nombre }}</h5>
                 {% else %}
-                    <h5>{% block header %}{% endblock %}</h5>
+                <h5>{% block header %}{% endblock %}</h5>
                 {% endif %}
             </div>
 
@@ -36,4 +41,5 @@
 
     <script src="{% static 'js/admin_notificaciones.js' %}"></script>
 </body>
+
 </html>

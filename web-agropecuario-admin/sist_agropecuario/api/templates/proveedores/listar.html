@@ -1,49 +1,67 @@
 {% extends 'base.html' %}
 {% block title %}Listado de Proveedores{% endblock %}
 {% block content %}
-<h2>🏢 Proveedores</h2>
+<div class="d-flex justify-content-between align-items-center mb-4"
+    style="display: flex; justify-content: space-between; align-items: center;">
+    <h2>🏢 Gestión de Proveedores</h2>
+    <a href="{% url 'crear_proveedor' %}" class="btn btn-primary">
+        <i class="fas fa-plus-circle"></i> Nuevo Proveedor
+    </a>
+</div>
 
-{% for message in messages %}
-    <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">{{ message }}</div>
-{% endfor %}
-
-<table>
-    <thead>
-        <tr>
-            <th>Nombre</th>
-            <th>Contacto</th>
-            <th>Teléfono</th>
-            <th>Email</th>
-            <th>Estado</th>
-            <th>Acciones</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for proveedor in proveedores %}
-        <tr>
-            <td>{{ proveedor.nombre }}</td>
-            <td>{{ proveedor.contacto }}</td>
-            <td>{{ proveedor.telefono }}</td>
-            <td>{{ proveedor.email }}</td>
-            <td>{% if proveedor.activo %}✅ Activo{% else %}❌ Inactivo{% endif %}</td>
-            <td>
-                <a href="{% url 'editar_proveedor' proveedor.pk %}">Editar</a> |
-                {% if proveedor.activo %}
-                    <a href="{% url 'desactivar_proveedor' proveedor.pk %}">Desactivar</a>
-                {% else %}
-                    <a href="{% url 'activar_proveedor' proveedor.pk %}">Activar</a>
-                {% endif %}
-            </td>
-        </tr>
-        {% empty %}
-        <tr><td colspan="6">No hay proveedores registrados.</td></tr>
-        {% endfor %}
-    </tbody>
-</table>
-<a href="{% url 'crear_proveedor' %}">← Nuevo Proveedor</a>
-{% endblock %}
 {% for message in messages %}
 <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
-    {{ message }}
+    <i class="fas fa-info-circle"></i> {{ message }}
 </div>
 {% endfor %}
+
+<div class="card">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Contacto</th>
+                <th>Teléfono</th>
+                <th>Email</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for proveedor in proveedores %}
+            <tr>
+                <td><strong>{{ proveedor.nombre }}</strong></td>
+                <td>{{ proveedor.contacto }}</td>
+                <td>{{ proveedor.telefono }}</td>
+                <td>{{ proveedor.email }}</td>
+                <td>
+                    {% if proveedor.activo %}
+                    <span class="badge badge-success"><i class="fas fa-check"></i> Activo</span>
+                    {% else %}
+                    <span class="badge badge-danger"><i class="fas fa-times"></i> Inactivo</span>
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{% url 'editar_proveedor' proveedor.pk %}" class="btn btn-secondary" title="Editar">
+                        <i class="fas fa-edit"></i>
+                    </a>
+                    {% if proveedor.activo %}
+                    <a href="{% url 'desactivar_proveedor' proveedor.pk %}" class="btn btn-danger" title="Desactivar">
+                        <i class="fas fa-ban"></i>
+                    </a>
+                    {% else %}
+                    <a href="{% url 'activar_proveedor' proveedor.pk %}" class="btn btn-success" title="Activar">
+                        <i class="fas fa-check-circle"></i>
+                    </a>
+                    {% endif %}
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6" class="text-center">No hay proveedores registrados.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

@@ -1,38 +1,66 @@
 {% extends "base.html" %}
 {% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4"
+    style="display: flex; justify-content: space-between; align-items: center;">
+    <h2>👥 Gestión de Usuarios</h2>
+    <a href="{% url 'crear_usuario' %}" class="btn btn-primary">
+        <i class="fas fa-user-plus"></i> Nuevo Usuario
+    </a>
+</div>
 
-<h2>Usuarios</h2>
+{% for message in messages %}
+<div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+    <i class="fas fa-info-circle"></i> {{ message }}
+</div>
+{% endfor %}
 
-<a href="{% url 'crear_usuario' %}" class="btn btn-primary mb-3">Nuevo Usuario</a>
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>Nombre</th>
-            <th>Email</th>
-            <th>Rol</th>
-            <th>Estado</th>
-            <th>Acciones</th>
-        </tr>
-    </thead>
-    <tbody id="usuarios-tbody">
-        {% for usuario in usuarios %}
-        <tr>
-            <td>{{ usuario.nombre }}</td>
-            <td>{{ usuario.email }}</td>
-            <td>{{ usuario.rol.nombre }}</td>
-            <td>{% if usuario.activo %}Activo{% else %}Inactivo{% endif %}</td>
-            <td>
-                <a href="{% url 'editar_usuario' usuario.pk %}" class="btn btn-warning">Editar</a>
-                {% if usuario.activo %}
-                    <a href="{% url 'desactivar_usuario' usuario.pk %}" class="btn btn-danger">Desactivar</a>
-                {% else %}
-                    <a href="{% url 'activar_usuario' usuario.pk %}" class="btn btn-success">Activar</a>
-                {% endif %}
-            </td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
-
+<div class="card">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Email</th>
+                <th>Rol</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody id="usuarios-tbody">
+            {% for usuario in usuarios %}
+            <tr>
+                <td><strong>{{ usuario.nombre }}</strong></td>
+                <td>{{ usuario.email }}</td>
+                <td>
+                    <span class="badge badge-info">{{ usuario.rol.nombre }}</span>
+                </td>
+                <td>
+                    {% if usuario.activo %}
+                    <span class="badge badge-success"><i class="fas fa-check"></i> Activo</span>
+                    {% else %}
+                    <span class="badge badge-danger"><i class="fas fa-times"></i> Inactivo</span>
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{% url 'editar_usuario' usuario.pk %}" class="btn btn-secondary" title="Editar">
+                        <i class="fas fa-edit"></i>
+                    </a>
+                    {% if usuario.activo %}
+                    <a href="{% url 'desactivar_usuario' usuario.pk %}" class="btn btn-danger" title="Desactivar">
+                        <i class="fas fa-ban"></i>
+                    </a>
+                    {% else %}
+                    <a href="{% url 'activar_usuario' usuario.pk %}" class="btn btn-success" title="Activar">
+                        <i class="fas fa-check-circle"></i>
+                    </a>
+                    {% endif %}
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5" class="text-center">No hay usuarios registrados.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
 {% endblock %}
