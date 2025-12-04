@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.http import JsonResponse
 from django.contrib.auth.hashers import make_password
 from ..models import Usuario, Rol
 
@@ -18,18 +19,26 @@ def crear_usuario(request):
         password = request.POST.get("password")
         rolid = request.POST.get("rolid")
 
-        Usuario.objects.create(
-            nombre=nombre,
-            email=email,
-            telefono=telefono,
-            dni=dni,
-            direccion=direccion,
-            passwordhash=make_password(password),
-            rol_id=rolid,
-            activo=True
-        )
+        if Usuario.objects.filter(email=email).exists():
+            return JsonResponse({'success': False, 'message': 'El correo electrónico ya está registrado.'})
+        
+        if dni and Usuario.objects.filter(dni=dni).exists():
+             return JsonResponse({'success': False, 'message': 'El DNI ya está registrado.'})
 
-        return redirect("listar_usuarios")
+        try:
+            Usuario.objects.create(
+                nombre=nombre,
+                email=email,
+                telefono=telefono,
+                dni=dni,
+                direccion=direccion,
+                passwordhash=make_password(password),
+                rol_id=rolid,
+                activo=True
+            )
+            return JsonResponse({'success': True, 'message': 'Usuario creado exitosamente.'})
+        except Exception as e:
+            return JsonResponse({'success': False, 'message': f'Error al crear usuario: {str(e)}'})
 
     roles = Rol.objects.filter(activo=True)
     return render(request, "usuarios/crear.html", {"roles": roles})

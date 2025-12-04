@@ -1,4 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
+from django.http import JsonResponse
 from django.contrib import messages
 from ..models import Proveedor, Insumo
 
@@ -16,18 +17,22 @@ def crear_proveedor(request):
         email = request.POST.get('email')
 
         if not nombre:
-            messages.error(request, "El nombre es obligatorio")
-            return render(request, 'proveedores/crear.html')
+            return JsonResponse({'success': False, 'message': 'El nombre es obligatorio'})
 
-        Proveedor.objects.create(
-            nombre=nombre,
-            contacto=contacto,
-            telefono=telefono,
-            email=email,
-            activo=True
-        )
-        messages.success(request, "Proveedor creado correctamente")
-        return redirect('listar_proveedores')
+        if email and Proveedor.objects.filter(email=email).exists():
+            return JsonResponse({'success': False, 'message': 'El correo electrónico ya está registrado.'})
+
+        try:
+            Proveedor.objects.create(
+                nombre=nombre,
+                contacto=contacto,
+                telefono=telefono,
+                email=email,
+                activo=True
+            )
+            return JsonResponse({'success': True, 'message': 'Proveedor creado correctamente'})
+        except Exception as e:
+            return JsonResponse({'success': False, 'message': f'Error al crear proveedor: {str(e)}'})
 
     return render(request, 'proveedores/crear.html')
 
