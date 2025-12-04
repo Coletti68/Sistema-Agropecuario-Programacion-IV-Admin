@@ -1,0 +1,60 @@
+/* ==========================
+   FORMULARIOS - Diseño Premium
+========================== */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+form label {
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 0.95rem;
+    letter-spacing: 0.3px;
+}
+
+form input,
+form select,
+form textarea {
+    padding: 14px 16px;
+    border: 2px solid #e5e7eb;
+    border-radius: var(--radius-md);
+    margin-bottom: 0;
+    transition: all var(--transition-normal);
+    font-family: 'Inter', sans-serif;
+    font-size: 0.95rem;
+    background-color: #fafafa;
+}
+
+form input:hover,
+form select:hover,
+form textarea:hover {
+    border-color: var(--primary-green-light);
+    background-color: #fff;
+}
+
+form input:focus,
+form select:focus,
+form textarea:focus {
+    outline: none;
+    border-color: var(--primary-green);
+    box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1);
+    background-color: #fff;
+    transform: translateY(-1px);
+}
+
+form textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+@media (max-width: 480px) {
+
+    form input,
+    form select,
+    form textarea {
+        padding: 12px 14px;
+    }
+}

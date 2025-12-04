@@ -4,14 +4,23 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>{% block title %}Admin Agro{% endblock %}</title>
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-</head>
+    {% load static %}
+    <!DOCTYPE html>
+    <html lang="es">
+
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}Admin Agro{% endblock %}</title>
+        <link rel="stylesheet" href="{% static 'css/style.css' %}">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    </head>
 
 <body>
     <div class="wrapper">
-        <div class="sidebar">
+        <button class="mobile-menu-toggle" id="mobile-menu-toggle">
+            <i class="fas fa-bars"></i>
+        </button>
+        <div class="sidebar" id="sidebar">
             <h4>Admin Agro</h4>
             <a href="{% url 'inicio' %}">Dashboard</a>
             <a href="{% url 'listar_usuarios' %}">Usuarios</a>
@@ -37,7 +46,29 @@
                 {% block content %}{% endblock %}
             </div>
         </div>
+        <div class="sidebar-overlay" id="sidebar-overlay"></div>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const toggleBtn = document.getElementById('mobile-menu-toggle');
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebar-overlay');
+
+            function toggleMenu() {
+                sidebar.classList.toggle('active');
+                overlay.classList.toggle('active');
+            }
+
+            if (toggleBtn) {
+                toggleBtn.addEventListener('click', toggleMenu);
+            }
+
+            if (overlay) {
+                overlay.addEventListener('click', toggleMenu);
+            }
+        });
+    </script>
 
     <script src="{% static 'js/admin_notificaciones.js' %}"></script>
 </body>

@@ -1,0 +1,31 @@
+/* ==========================
+   BADGES
+========================== */
+.badge {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: var(--radius-sm);
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+}
+
+.badge-success {
+    background: linear-gradient(135deg, var(--accent-green), var(--primary-green-light));
+    color: #065f46;
+}
+
+.badge-danger {
+    background: linear-gradient(135deg, #fca5a5, #f87171);
+    color: #7f1d1d;
+}
+
+.badge-warning {
+    background: linear-gradient(135deg, #fde68a, #fbbf24);
+    color: #78350f;
+}
+
+.badge-info {
+    background: linear-gradient(135deg, #93c5fd, #60a5fa);
+    color: #1e3a8a;
+}

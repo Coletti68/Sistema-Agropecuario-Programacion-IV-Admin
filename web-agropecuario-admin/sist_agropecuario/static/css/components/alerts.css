@@ -1,0 +1,36 @@
+/* ==========================
+   ALERTAS - Diseño Mejorado
+========================== */
+.alert {
+    border-radius: var(--radius-md);
+    font-size: 0.95rem;
+    padding: 16px 20px;
+    border: none;
+    box-shadow: var(--shadow-sm);
+    animation: fadeIn 0.5s ease;
+    margin-bottom: 20px;
+}
+
+.alert-success {
+    background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+    color: #065f46;
+    border-left: 4px solid var(--primary-green);
+}
+
+.alert-danger {
+    background: linear-gradient(135deg, #fee2e2, #fecaca);
+    color: #991b1b;
+    border-left: 4px solid #ef4444;
+}
+
+.alert-warning {
+    background: linear-gradient(135deg, #fef3c7, #fde68a);
+    color: #92400e;
+    border-left: 4px solid #f59e0b;
+}
+
+.alert-info {
+    background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+    color: #1e40af;
+    border-left: 4px solid #3b82f6;
+}
