@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib import messages
 from django.http import JsonResponse
 from django.contrib.auth.hashers import make_password
 from ..models import Usuario, Rol
@@ -62,6 +63,7 @@ def editar_usuario(request, pk):
             usuario.passwordhash = make_password(request.POST.get("password"))
 
         usuario.save()
+        messages.success(request, "Datos de usuario modificados con exito")
         return redirect("listar_usuarios")
 
     roles = Rol.objects.filter(activo=True)
