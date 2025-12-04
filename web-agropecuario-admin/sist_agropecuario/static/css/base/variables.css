@@ -1,35 +1,38 @@
 :root {
-    /* Colores principales - Paleta verde vibrante */
-    --primary-green: #10b981;
-    --primary-green-dark: #059669;
-    --primary-green-light: #34d399;
-    --accent-green: #6ee7b7;
+    /* Colores principales - Deep Emerald & Gold Theme */
+    --primary-green: #065f46;       /* Deep Emerald */
+    --primary-green-dark: #064e3b;  /* Darker Emerald */
+    --primary-green-light: #10b981; /* Vibrant Green for accents */
+    --accent-gold: #f59e0b;         /* Gold/Amber for premium highlights */
+    --accent-gold-light: #fbbf24;
 
     /* Colores de fondo */
-    --bg-main: #f0fdf4;
+    --bg-main: #f3f4f6;             /* Light Gray/Off-white for cleaner look */
     --bg-card: #ffffff;
-    --bg-sidebar: linear-gradient(180deg, #059669 0%, #047857 100%);
+    --bg-sidebar: linear-gradient(180deg, #065f46 0%, #042f2e 100%); /* Deep rich gradient */
 
     /* Colores de texto */
-    --text-primary: #1f2937;
-    --text-secondary: #6b7280;
+    --text-primary: #111827;        /* Almost black */
+    --text-secondary: #4b5563;      /* Dark gray */
     --text-light: #9ca3af;
     --text-white: #ffffff;
+    --text-gold: #d97706;
 
-    /* Sombras */
-    --shadow-sm: 0 2px 8px rgba(16, 185, 129, 0.08);
-    --shadow-md: 0 4px 16px rgba(16, 185, 129, 0.12);
-    --shadow-lg: 0 8px 32px rgba(16, 185, 129, 0.16);
-    --shadow-xl: 0 12px 48px rgba(16, 185, 129, 0.2);
+    /* Sombras - Softer & More Diffused */
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    --shadow-glow: 0 0 15px rgba(16, 185, 129, 0.3); /* Green glow */
 
     /* Bordes */
-    --radius-sm: 8px;
-    --radius-md: 12px;
+    --radius-sm: 6px;
+    --radius-md: 10px;
     --radius-lg: 16px;
-    --radius-xl: 20px;
+    --radius-xl: 24px;
 
     /* Transiciones */
-    --transition-fast: 0.2s ease;
-    --transition-normal: 0.3s ease;
-    --transition-slow: 0.5s ease;
+    --transition-fast: 0.15s ease;
+    --transition-normal: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-slow: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
